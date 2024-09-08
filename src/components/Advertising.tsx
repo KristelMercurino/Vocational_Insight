@@ -3,12 +3,6 @@ import { Container, Typography, Box } from "@mui/material";
 export default function AdvertisementPage() {
   return (
     <Container sx={{ marginTop: 4, marginBottom: 4 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Publicidad
-      </Typography>
-      {/* <Typography variant="body1" align="center" gutterBottom>
-        Aquí puedes ver algunas ofertas y promociones interesantes.
-      </Typography> */}
       <Box
         sx={{
           marginTop: 2,
