@@ -1,8 +1,7 @@
 import Carousel from "../components/Carousel";
 import Cards from "../components/Cards";
-import Charts from "../components/Charts";
-import Survey from "../components/Survey";
 import Advertising from "../components/Advertising";
+import Footer from "../components/footer";
 
 const Home = () => {
   return (
@@ -10,8 +9,7 @@ const Home = () => {
       <Carousel />
       <Advertising />
       <Cards />
-      <Survey />
-      <Charts />
+      <Footer />
     </div>
   );
 };

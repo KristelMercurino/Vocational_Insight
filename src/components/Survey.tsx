@@ -9,8 +9,9 @@ import {
   Grid,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate para la navegación
 
-export default function VocationalTest() {
+export default function Survey() {
   const [state, setState] = useState({
     // Pregunta 1
     q1a: false,
@@ -50,6 +51,8 @@ export default function VocationalTest() {
     q6e: false,
   });
 
+  const navigate = useNavigate(); // Hook para navegar entre rutas
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
@@ -60,10 +63,13 @@ export default function VocationalTest() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Selected options: ", state);
+
+    // Redirige a la página de gráficos (Charts) después de enviar el formulario
+    navigate("/results");
   };
 
   return (
-    <Container sx={{ mt: 3 }}>
+    <Container maxWidth="xl" sx={{ mt: 3 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Test Vocacional
       </Typography>
@@ -89,6 +95,12 @@ export default function VocationalTest() {
                       checked={state.q1a}
                       onChange={handleChange}
                       name="q1a"
+                      sx={{
+                        color: "#ECB444", // Color del checkbox
+                        "&.Mui-checked": {
+                          color: "#ECB444", // Color cuando está marcado
+                        },
+                      }}
                     />
                   }
                   label="a) Resolver acertijos y problemas matemáticos"
@@ -99,6 +111,12 @@ export default function VocationalTest() {
                       checked={state.q1b}
                       onChange={handleChange}
                       name="q1b"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="b) Escribir, leer libros, o crear contenido artísticos"
@@ -109,6 +127,12 @@ export default function VocationalTest() {
                       checked={state.q1c}
                       onChange={handleChange}
                       name="q1c"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="c) Participar en actividades al aire libre o deportes"
@@ -119,6 +143,12 @@ export default function VocationalTest() {
                       checked={state.q1d}
                       onChange={handleChange}
                       name="q1d"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="d) Dibujar, pintar, crear cosas o trabajar con las manos"
@@ -129,6 +159,12 @@ export default function VocationalTest() {
                       checked={state.q1e}
                       onChange={handleChange}
                       name="q1e"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="e) Interactuar con personas y ayudar a otros"
@@ -152,6 +188,12 @@ export default function VocationalTest() {
                       checked={state.q2a}
                       onChange={handleChange}
                       name="q2a"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="a) Matemáticas y ciencias"
@@ -162,6 +204,12 @@ export default function VocationalTest() {
                       checked={state.q2b}
                       onChange={handleChange}
                       name="q2b"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="b) Lenguaje, literatura, y artes"
@@ -172,6 +220,12 @@ export default function VocationalTest() {
                       checked={state.q2c}
                       onChange={handleChange}
                       name="q2c"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="c) Educación física"
@@ -182,6 +236,12 @@ export default function VocationalTest() {
                       checked={state.q2d}
                       onChange={handleChange}
                       name="q2d"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="d) Artes plásticas, música, y tecnología"
@@ -192,6 +252,12 @@ export default function VocationalTest() {
                       checked={state.q2e}
                       onChange={handleChange}
                       name="q2e"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="e) Ciencias sociales, psicología y filosofía"
@@ -213,6 +279,12 @@ export default function VocationalTest() {
                       checked={state.q3a}
                       onChange={handleChange}
                       name="q3a"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="a) Solo, concentrado en un problema específico"
@@ -223,6 +295,12 @@ export default function VocationalTest() {
                       checked={state.q3b}
                       onChange={handleChange}
                       name="q3b"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="b) En un ambiente creativo, generando ideas nuevas"
@@ -233,6 +311,12 @@ export default function VocationalTest() {
                       checked={state.q3c}
                       onChange={handleChange}
                       name="q3c"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="c) En equipo, colaborando con otros"
@@ -243,9 +327,15 @@ export default function VocationalTest() {
                       checked={state.q3d}
                       onChange={handleChange}
                       name="q3d"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
-                  label="d) En actividades prácticas que involucren herramientas o técnicas"
+                  label="d) En actividades prácticas que involucren el uso de herramientas o técnicas"
                 />
                 <FormControlLabel
                   control={
@@ -253,6 +343,12 @@ export default function VocationalTest() {
                       checked={state.q3e}
                       onChange={handleChange}
                       name="q3e"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="e) Ayudando directamente a las personas"
@@ -276,6 +372,12 @@ export default function VocationalTest() {
                       checked={state.q4a}
                       onChange={handleChange}
                       name="q4a"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="a) Sí, quiero trabajar con tecnología de punta"
@@ -286,6 +388,12 @@ export default function VocationalTest() {
                       checked={state.q4b}
                       onChange={handleChange}
                       name="q4b"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="b) Me interesa, pero no quiero que sea el enfoque principal"
@@ -296,6 +404,12 @@ export default function VocationalTest() {
                       checked={state.q4c}
                       onChange={handleChange}
                       name="q4c"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="c) No es algo que me atraiga particularmente"
@@ -306,9 +420,15 @@ export default function VocationalTest() {
                       checked={state.q4d}
                       onChange={handleChange}
                       name="q4d"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
-                  label="d) Prefiero usar tecnología de manera práctica"
+                  label="d) Prefiero usar tecnología de manera práctica, sin enfocarme en ella"
                 />
                 <FormControlLabel
                   control={
@@ -316,6 +436,12 @@ export default function VocationalTest() {
                       checked={state.q4e}
                       onChange={handleChange}
                       name="q4e"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="e) No, me interesa más el trato directo con las personas"
@@ -339,6 +465,12 @@ export default function VocationalTest() {
                       checked={state.q5a}
                       onChange={handleChange}
                       name="q5a"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="a) Estabilidad laboral y un buen salario"
@@ -349,6 +481,12 @@ export default function VocationalTest() {
                       checked={state.q5b}
                       onChange={handleChange}
                       name="q5b"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="b) Libertad creativa y la posibilidad de innovar"
@@ -359,6 +497,12 @@ export default function VocationalTest() {
                       checked={state.q5c}
                       onChange={handleChange}
                       name="q5c"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="c) Un trabajo dinámico que no sea repetitivo"
@@ -369,9 +513,15 @@ export default function VocationalTest() {
                       checked={state.q5d}
                       onChange={handleChange}
                       name="q5d"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
-                  label="d) La capacidad de ver los resultados tangibles de mi trabajo"
+                  label="d) Ver los resultados tangibles de mi trabajo"
                 />
                 <FormControlLabel
                   control={
@@ -379,9 +529,15 @@ export default function VocationalTest() {
                       checked={state.q5e}
                       onChange={handleChange}
                       name="q5e"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
-                  label="e) Poder hacer una diferencia en la vida de las personas"
+                  label="e) Hacer una diferencia en la vida de las personas"
                 />
               </FormGroup>
             </Box>
@@ -402,9 +558,15 @@ export default function VocationalTest() {
                       checked={state.q6a}
                       onChange={handleChange}
                       name="q6a"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
-                  label="a) A través de libros, cursos online, o estudios formales"
+                  label="a) A través de libros, cursos online o estudios formales"
                 />
                 <FormControlLabel
                   control={
@@ -412,6 +574,12 @@ export default function VocationalTest() {
                       checked={state.q6b}
                       onChange={handleChange}
                       name="q6b"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="b) Experimentando y probando nuevas ideas por mi cuenta"
@@ -422,6 +590,12 @@ export default function VocationalTest() {
                       checked={state.q6c}
                       onChange={handleChange}
                       name="q6c"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="c) A través de la práctica y el trabajo en equipo"
@@ -432,6 +606,12 @@ export default function VocationalTest() {
                       checked={state.q6d}
                       onChange={handleChange}
                       name="q6d"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="d) Aprendiendo de otros profesionales o en el lugar de trabajo"
@@ -442,6 +622,12 @@ export default function VocationalTest() {
                       checked={state.q6e}
                       onChange={handleChange}
                       name="q6e"
+                      sx={{
+                        color: "#ECB444",
+                        "&.Mui-checked": {
+                          color: "#ECB444",
+                        },
+                      }}
                     />
                   }
                   label="e) Observando e interactuando con personas con experiencia"
