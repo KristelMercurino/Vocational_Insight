@@ -37,12 +37,17 @@ function ResponsiveAppBar() {
     <AppBar position="static" sx={{ backgroundColor: "#2c3e50" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo */}
+          {/* Logo con tamaño ajustado, fondo claro y borde */}
           <Box
             component="img"
             sx={{
-              height: 50, // Ajusta el tamaño de tu logo aquí
+              height: 60, // Aumenta el tamaño del logo
               mr: 2,
+              p: 0, // Espaciado interno para darle más "aire"
+              backgroundColor: "#f4e4c1", // Fondo claro, similar al amarillo pálido
+              border: "2px solid #ECB444", // Borde amarillo para darle visibilidad
+              borderRadius: "8px", // Bordes redondeados
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)", // Sombra más marcada
             }}
             alt="Logo"
             src={logo}

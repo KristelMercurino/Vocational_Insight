@@ -8,8 +8,10 @@ import {
   Typography,
   Grid,
   Box,
+  Snackbar,
+  Alert, // Importamos el componente Alert para mostrar mensajes estilizados
 } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate para la navegación
+import { useNavigate } from "react-router-dom"; // Hook para navegar entre rutas
 
 export default function Survey() {
   const [state, setState] = useState({
@@ -51,21 +53,57 @@ export default function Survey() {
     q6e: false,
   });
 
-  const navigate = useNavigate(); // Hook para navegar entre rutas
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para controlar el Snackbar
+  const navigate = useNavigate(); // Hook para la navegación
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Función para contar cuántas opciones están seleccionadas en una pregunta
+  const countSelectedOptions = (questionPrefix) => {
+    return Object.keys(state).filter(
+      (key) => key.startsWith(questionPrefix) && state[key]
+    ).length;
+  };
+
+  // Función para manejar el cambio de estado de los checkboxes
+  const handleChange = (event) => {
+    const { name, checked } = event.target;
+
+    // Actualiza el estado del checkbox
     setState({
       ...state,
-      [event.target.name]: event.target.checked,
+      [name]: checked,
     });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("Selected options: ", state);
+  // Función para validar si al menos una opción ha sido seleccionada por cada pregunta
+  const isFormValid = () => {
+    for (let i = 1; i <= 6; i++) {
+      if (countSelectedOptions(`q${i}`) === 0) {
+        return false;
+      }
+    }
+    return true;
+  };
 
-    // Redirige a la página de gráficos (Charts) después de enviar el formulario
-    navigate("/results");
+  // Función para manejar el envío del formulario
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Validar si al menos una opción ha sido seleccionada por cada pregunta
+    if (!isFormValid()) {
+      setOpenSnackbar(true); // Mostrar Snackbar si no se cumple la validación
+    } else {
+      console.log("Selected options: ", state);
+      // Redirige a la página de resultados después de enviar el formulario
+      navigate("/results");
+    }
+  };
+
+  // Función para cerrar el Snackbar
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false); // Cierra el Snackbar cuando se hace clic fuera o se oculta automáticamente
   };
 
   return (
@@ -75,8 +113,8 @@ export default function Survey() {
       </Typography>
       <Typography align="center" variant="body1" gutterBottom>
         Lee cada pregunta cuidadosamente y selecciona todas las alternativas que
-        reflejen tus intereses y habilidades. No te preocupes por elegir una
-        sola opción, puedes seleccionar todas las que se apliquen a ti.
+        reflejen tus intereses y habilidades. Puedes seleccionar un máximo de 3
+        opciones por pregunta.
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={4}>
@@ -96,9 +134,9 @@ export default function Survey() {
                       onChange={handleChange}
                       name="q1a"
                       sx={{
-                        color: "#ECB444", // Color del checkbox
+                        color: "#ECB444",
                         "&.Mui-checked": {
-                          color: "#ECB444", // Color cuando está marcado
+                          color: "#ECB444",
                         },
                       }}
                     />
@@ -119,7 +157,7 @@ export default function Survey() {
                       }}
                     />
                   }
-                  label="b) Escribir, leer libros, o crear contenido artísticos"
+                  label="b) Escribir, leer libros, o crear contenido artístico"
                 />
                 <FormControlLabel
                   control={
@@ -212,7 +250,7 @@ export default function Survey() {
                       }}
                     />
                   }
-                  label="b) Lenguaje, literatura, y artes"
+                  label="b) Lenguaje, literatura y artes"
                 />
                 <FormControlLabel
                   control={
@@ -244,7 +282,7 @@ export default function Survey() {
                       }}
                     />
                   }
-                  label="d) Artes plásticas, música, y tecnología"
+                  label="d) Artes plásticas, música y tecnología"
                 />
                 <FormControlLabel
                   control={
@@ -651,6 +689,21 @@ export default function Survey() {
           </Grid>
         </Grid>
       </form>
+
+      {/* Snackbar para mostrar el mensaje de error */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000} // Duración del Snackbar (6 segundos)
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Por favor, selecciona al menos una opción en cada pregunta.
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

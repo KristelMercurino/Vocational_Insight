@@ -1,13 +1,12 @@
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import opinion from "../assets/img/opinion.png"; // Asegúrate de tener una imagen para las opiniones
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
+import opinion from "../assets/img/opinion.png"; // Imagen circular pequeña
 
 function MediaCard({
   name,
@@ -19,7 +18,7 @@ function MediaCard({
   return (
     <Card
       sx={{
-        height: "100%", // Asegura que todos los cards tengan la misma altura
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -31,27 +30,21 @@ function MediaCard({
         borderRadius: "12px", // Bordes redondeados
       }}
     >
-      <CardMedia
-        sx={{ height: 140, borderRadius: "12px 12px 0 0" }}
-        image={opinion}
-        title="User Opinion"
-      />
       <CardContent>
-        <Typography gutterBottom variant="h5" color="primary" component="div">
-          {name}
-        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Avatar
+            alt={name}
+            src={opinion} // La imagen pequeña circular
+            sx={{ width: 56, height: 56 }} // Tamaño del Avatar
+          />
+          <Typography gutterBottom variant="h5" color="primary" component="div">
+            {name}
+          </Typography>
+        </Stack>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {opinionText}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" variant="contained" color="secondary">
-          Like
-        </Button>
-        <Button size="small" variant="contained" color="success">
-          Reply
-        </Button>
-      </CardActions>
     </Card>
   );
 }
@@ -82,7 +75,7 @@ export default function ResponsiveCards() {
       maxWidth="xl"
       sx={{
         backgroundColor: "#2c3e50ff", // Fondo azul oscuro
-        padding: 4, // Añade padding para que no esté pegado a los bordes
+        padding: 4,
         borderRadius: 1, // Bordes redondeados del container
         boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)", // Sombra suave para el container
       }}
@@ -94,8 +87,6 @@ export default function ResponsiveCards() {
         {opinions.map((opinion, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Box sx={{ height: "100%" }}>
-              {" "}
-              {/* Ajustamos la altura del contenedor para asegurar que los Cards se alineen */}
               <MediaCard
                 name={opinion.name}
                 opinionText={opinion.opinionText}

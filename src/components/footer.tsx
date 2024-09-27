@@ -12,21 +12,21 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        mt: 2,
-        backgroundColor: "#2c3e50ff", // Fondo azul oscuro
-        color: "#fff", // Texto en blanco
-        paddingTop: 4,
-        paddingBottom: 4,
+        mt: 4,
+        background: "linear-gradient(135deg, #1f2f46, #3b4e68)", // Gradiente moderno
+        color: "#f0f0f0", // Texto claro
+        paddingTop: 3,
+        paddingBottom: 2,
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={4} justifyContent="space-between">
+        <Grid container spacing={6} justifyContent="space-between">
           {/* Sección 1: Información */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
               Sobre nosotros
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ lineHeight: 1.8 }}>
               Vocational Insight es una plataforma dedicada a ayudar a los
               estudiantes a descubrir su verdadera vocación. Brindamos recursos
               y guías para que los estudiantes tomen decisiones informadas sobre
@@ -36,7 +36,7 @@ export default function Footer() {
 
           {/* Sección 2: Enlaces */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
               Enlaces útiles
             </Typography>
             <Link
@@ -44,7 +44,9 @@ export default function Footer() {
               color="inherit"
               underline="hover"
               display="block"
-              sx={{ mb: 1 }}
+              sx={{ mb: 1.5, fontSize: "1.1rem", transition: "color 0.3s" }}
+              onMouseOver={(e) => (e.target.style.color = "#4caf50")}
+              onMouseOut={(e) => (e.target.style.color = "#f0f0f0")}
             >
               Inicio
             </Link>
@@ -53,7 +55,9 @@ export default function Footer() {
               color="inherit"
               underline="hover"
               display="block"
-              sx={{ mb: 1 }}
+              sx={{ mb: 1.5, fontSize: "1.1rem", transition: "color 0.3s" }}
+              onMouseOver={(e) => (e.target.style.color = "#4caf50")}
+              onMouseOut={(e) => (e.target.style.color = "#f0f0f0")}
             >
               Carreras
             </Link>
@@ -62,7 +66,9 @@ export default function Footer() {
               color="inherit"
               underline="hover"
               display="block"
-              sx={{ mb: 1 }}
+              sx={{ mb: 1.5, fontSize: "1.1rem", transition: "color 0.3s" }}
+              onMouseOver={(e) => (e.target.style.color = "#4caf50")}
+              onMouseOut={(e) => (e.target.style.color = "#f0f0f0")}
             >
               Contacto
             </Link>
@@ -71,7 +77,9 @@ export default function Footer() {
               color="inherit"
               underline="hover"
               display="block"
-              sx={{ mb: 1 }}
+              sx={{ mb: 1.5, fontSize: "1.1rem", transition: "color 0.3s" }}
+              onMouseOver={(e) => (e.target.style.color = "#4caf50")}
+              onMouseOut={(e) => (e.target.style.color = "#f0f0f0")}
             >
               FAQ
             </Link>
@@ -79,7 +87,7 @@ export default function Footer() {
 
           {/* Sección 3: Redes sociales */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
               Síguenos
             </Typography>
             <Box>
@@ -87,7 +95,11 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener"
-                sx={{ color: "#fff" }}
+                sx={{
+                  color: "#f0f0f0",
+                  transition: "color 0.3s",
+                  "&:hover": { color: "#4caf50" },
+                }}
               >
                 <Facebook />
               </IconButton>
@@ -95,7 +107,11 @@ export default function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener"
-                sx={{ color: "#fff" }}
+                sx={{
+                  color: "#f0f0f0",
+                  transition: "color 0.3s",
+                  "&:hover": { color: "#4caf50" },
+                }}
               >
                 <Twitter />
               </IconButton>
@@ -103,7 +119,11 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener"
-                sx={{ color: "#fff" }}
+                sx={{
+                  color: "#f0f0f0",
+                  transition: "color 0.3s",
+                  "&:hover": { color: "#4caf50" },
+                }}
               >
                 <Instagram />
               </IconButton>
@@ -111,7 +131,11 @@ export default function Footer() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener"
-                sx={{ color: "#fff" }}
+                sx={{
+                  color: "#f0f0f0",
+                  transition: "color 0.3s",
+                  "&:hover": { color: "#4caf50" },
+                }}
               >
                 <LinkedIn />
               </IconButton>
@@ -124,7 +148,7 @@ export default function Footer() {
           sx={{
             textAlign: "center",
             marginTop: 4,
-            borderTop: "1px solid #fff",
+            borderTop: "1px solid #4caf50",
             paddingTop: 2,
           }}
         >

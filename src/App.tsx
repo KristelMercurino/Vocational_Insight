@@ -7,7 +7,6 @@ import theme from "./theme/theme";
 import Charts from "./components/Charts";
 import Results from "./components/Results";
 import Feedback from "./components/Feedback";
-import { Login } from "@mui/icons-material";
 
 export default function App() {
   return (
@@ -18,7 +17,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Survey" element={<Survey />} />
-          <Route path="/Login" element={<Login />} /> {/* Ruta para el login */}
           <Route path="/Charts" element={<Charts />} />
           <Route path="/Results" element={<Results />} />
           <Route path="/Feedback" element={<Feedback />} />
