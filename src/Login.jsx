@@ -185,6 +185,11 @@ const Login = () => {
                         ¿No tienes cuenta? <a href="/register" style={{ color: '#ECB444' }}>Regístrate aquí</a>
                     </Typography>
 
+                    {/* Enlace para recuperar contraseña */}
+                    <Typography align="center" style={{ marginTop: '0.5rem', fontSize: isSmallScreen ? '14px' : '16px' }}>
+                        <a href="/recuperar-contraseña" style={{ color: '#ECB444' }}>¿Olvidaste tu contraseña?</a>
+                    </Typography>
+
                 </Grid>
             </Grid>
         </Grid>
