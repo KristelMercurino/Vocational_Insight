@@ -1,59 +1,79 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  InputAdornment,
+} from "@mui/material";
+import { Email } from "@mui/icons-material";
 
-interface ForgotPasswordProps {
-  open: boolean;
-  handleClose: () => void;
-}
+const ForgotPasswordPage: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
-export default function ForgotPassword({
-  open,
-  handleClose,
-}: ForgotPasswordProps) {
+  const handlePasswordReset = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Aquí iría la lógica para enviar el email de restablecimiento de contraseña
+    console.log("Enviando email de recuperación a:", email);
+    setMessage(
+      "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña."
+    );
+  };
+
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      PaperProps={{
-        component: "form",
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          handleClose();
-        },
+    <Box
+      sx={{
+        maxWidth: 400,
+        mx: "auto",
+        mt: 8,
+        p: 4,
+        backgroundColor: "#f4f4f4",
+        borderRadius: 2,
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <DialogTitle>Reset password</DialogTitle>
-      <DialogContent
-        sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
-      >
-        <DialogContentText>
-          Enter your account&apos;s email address, and we&apos;ll send you a
-          link to reset your password.
-        </DialogContentText>
-        <OutlinedInput
-          autoFocus
-          required
-          margin="dense"
-          id="email"
-          name="email"
-          label="Email address"
-          placeholder="Email address"
-          type="email"
+      <Typography variant="h4" textAlign="center" mb={4}>
+        Recuperar Contraseña
+      </Typography>
+      <form onSubmit={handlePasswordReset}>
+        <TextField
+          label="Correo Electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           fullWidth
+          margin="normal"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email style={{ color: "#ECB444" }} />
+              </InputAdornment>
+            ),
+          }}
         />
-      </DialogContent>
-      <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" type="submit">
-          Continue
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{
+            mt: 2,
+            backgroundColor: "#ECB444",
+            color: "#2c3e50",
+            "&:hover": {
+              backgroundColor: "#A3D6C4",
+            },
+          }}
+        >
+          Recuperar Contraseña
         </Button>
-      </DialogActions>
-    </Dialog>
+      </form>
+      {message && (
+        <Typography color="primary" mt={2}>
+          {message}
+        </Typography>
+      )}
+    </Box>
   );
-}
+};
+
+export default ForgotPasswordPage;

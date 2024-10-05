@@ -1,16 +1,45 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button, Container } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Container,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { Rating } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 export default function FeedbackForm() {
-  const [rating, setRating] = useState<number | null>(0);
-  const [comment, setComment] = useState<string>("");
+  const [rating, setRating] = useState<number | null>(null); // Valoración inicial nula
+  const [comment, setComment] = useState<string>(""); // Comentario inicial vacío
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
+  const [errorMessage, setErrorMessage] = useState<string>(""); // Mensaje de error para el Snackbar
 
   const handleSubmit = () => {
+    // Verificar si los campos están completos
+    if (rating === null || comment.trim() === "") {
+      setErrorMessage("Por favor, completa ambos campos antes de enviar."); // Mensaje de error personalizado
+      setOpenSnackbar(true); // Mostrar el Snackbar
+      return;
+    }
+
+    // Si no hay errores, se puede proceder con el envío
     console.log("Rating:", rating);
     console.log("Comment:", comment);
     // Aquí puedes manejar el envío de la valoración, como guardarla en una base de datos o enviarla a un servidor.
+  };
+
+  // Función para cerrar el Snackbar
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false); // Cerrar el Snackbar
   };
 
   return (
@@ -22,7 +51,9 @@ export default function FeedbackForm() {
         borderRadius: 3,
         boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
         mt: 5,
-        color: "#ffffff", // Texto blanco para contraste con el fondo oscuro
+        color: "#ffffff", // Texto blanco para contraste con el fondo oscuro,
+        marginTop: 10,
+        marginBottom: 10,
       }}
     >
       <Typography
@@ -101,6 +132,21 @@ export default function FeedbackForm() {
           Enviar Valoración
         </Button>
       </Box>
+
+      {/* Snackbar para mostrar el mensaje de error */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000} // Duración del Snackbar (4 segundos)
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
