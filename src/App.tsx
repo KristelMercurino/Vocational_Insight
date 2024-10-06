@@ -9,9 +9,8 @@ import Results from "./components/Results";
 import Feedback from "./components/Feedback";
 import Footer from "./components/footer";
 import Login from "./components/Login";
-import Register from "./components/Registro";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
+import Registro from "./components/Register";
+import RecuperarContraseña from "./components/RecuperarContraseña";
 
 export default function App() {
   return (
@@ -26,9 +25,11 @@ export default function App() {
           <Route path="/Results" element={<Results />} />
           <Route path="/Feedback" element={<Feedback />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route
+            path="/RecuperarContraseña"
+            element={<RecuperarContraseña />}
+          />
         </Routes>
         <Footer />
       </Router>
