@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Importa el componente Link de react-router-dom
+import { Link, useNavigate } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -27,6 +27,8 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,10 +77,48 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateFields()) {
-      console.log("Inicio de sesión exitoso:", formData);
+      const requestBody = {
+        email: formData.email,
+        contrasena: formData.contraseña,
+      };
+
+      try {
+        const response = await fetch(
+          "https://vocational-insight-562114386469.southamerica-west1.run.app/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+
+        if (!response.ok) {
+          const errorDetails = await response.json();
+          throw new Error(
+            errorDetails.message || "Error en el inicio de sesión"
+          );
+        }
+
+        const data = await response.json();
+
+        // Guarda el token y el nombre en localStorage
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("userName", data.nombre); // Asegúrate de que 'nombre' es parte de la respuesta de la API
+
+        setMessage("Inicio de sesión exitoso");
+
+        // Redirigir a la página de inicio después de 2 segundos
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      } catch (error) {
+        setMessage(error.message || "Error en el inicio de sesión");
+      }
     }
   };
 
@@ -87,7 +127,6 @@ const Login = () => {
       container
       style={{ minHeight: "100vh", backgroundColor: "#2c3e50ff" }}
     >
-      {/* Sección izquierda con logo y texto */}
       <Grid
         item
         xs={12}
@@ -122,21 +161,8 @@ const Login = () => {
         >
           Vocational Insight
         </Typography>
-        <Typography
-          variant="body1"
-          align="center"
-          style={{
-            maxWidth: isSmallScreen ? "250px" : "300px",
-            lineHeight: "1.4",
-            fontSize: isSmallScreen ? "14px" : "16px",
-          }}
-        >
-          ¡Haz que cada paso cuente y encuentra la carrera que te impulse a
-          alcanzar tu máximo potencial y éxito!
-        </Typography>
       </Grid>
 
-      {/* Sección derecha con el formulario de login */}
       <Grid
         item
         xs={12}
@@ -164,6 +190,7 @@ const Login = () => {
             Iniciar sesión
           </Typography>
 
+          {/* Formulario */}
           <FormControl fullWidth style={{ marginBottom: "1rem" }}>
             <TextField
               label="Correo electrónico"
@@ -242,29 +269,22 @@ const Login = () => {
             Iniciar sesión
           </Button>
 
-          <Typography
-            align="center"
-            style={{
-              marginTop: "1rem",
-              fontSize: isSmallScreen ? "14px" : "16px",
-            }}
-          >
+          {message && (
+            <Typography
+              align="center"
+              style={{
+                marginTop: "1rem",
+                color: message.includes("exitoso") ? "green" : "red",
+              }}
+            >
+              {message}
+            </Typography>
+          )}
+
+          <Typography align="center" style={{ marginTop: "1rem" }}>
             ¿No tienes cuenta?{" "}
             <Link to="/Registro" style={{ color: "#ECB444" }}>
               Regístrate aquí
-            </Link>
-          </Typography>
-
-          {/* Enlace para recuperar contraseña */}
-          <Typography
-            align="center"
-            style={{
-              marginTop: "0.5rem",
-              fontSize: isSmallScreen ? "14px" : "16px",
-            }}
-          >
-            <Link to="/RecuperarContraseña" style={{ color: "#ECB444" }}>
-              ¿Olvidaste tu contraseña?
             </Link>
           </Typography>
         </Grid>

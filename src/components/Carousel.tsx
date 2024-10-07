@@ -68,7 +68,7 @@ function MyCarousel() {
 
       {/* Sección "¿Quiénes somos?" con Container */}
       <Container
-        maxWidth="xl" // Limitamos el ancho de esta sección
+        maxWidth="xl"
         sx={{
           textAlign: "center",
           padding: 3,
@@ -78,10 +78,22 @@ function MyCarousel() {
           boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
         }}
       >
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          gutterBottom
+          sx={{
+            color: "#ECB444", // Color amarillo para el título
+          }}
+        >
           ¿Quiénes somos?
         </Typography>
-        <Typography variant="body1">
+        <Typography
+          variant="body1"
+          sx={{
+            color: "#f4f4f4", // Color más claro para el texto
+          }}
+        >
           Somos un equipo comprometido con tu futuro. Creemos que cada
           estudiante merece encontrar una carrera que realmente le apasione y le
           permita alcanzar su máximo potencial. Con herramientas avanzadas y

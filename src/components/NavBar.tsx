@@ -1,19 +1,30 @@
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import logo from "../assets/img/logo-sf.png"; // Asegúrate de que el logo esté bien vinculado
-import { useNavigate } from "react-router-dom"; // Importamos useNavigate para manejar la navegación
+import Typography from "@mui/material/Typography"; // Asegúrate de agregar esta línea
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/img/logo-sf.png";
 
 const pages = ["Inicio", "Pricing", "Blog"];
 
 function ResponsiveAppBar() {
-  const navigate = useNavigate(); // Hook para navegar entre rutas
+  const [userName, setUserName] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Recupera el nombre del usuario desde el localStorage
+    const storedUserName = localStorage.getItem("userName");
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []);
 
   const handleNavigation = (page: string) => {
     if (page === "Inicio") {
-      navigate("/"); // Redirige a la página de inicio
+      navigate("/");
     }
     if (page === "Pricing") {
       navigate("/pricing");
@@ -23,49 +34,45 @@ function ResponsiveAppBar() {
     }
   };
 
-  // Función que maneja la navegación al login
-  const handleLogin = () => {
-    navigate("/login"); // Redirige a la página de inicio de sesión
-  };
-
-  // Función que maneja la navegación al registro
-  const handleRegister = () => {
-    navigate("/register"); // Redirige a la página de registro
+  const handleLogout = () => {
+    // Limpiar el localStorage al cerrar sesión
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userName");
+    setUserName(null);
+    navigate("/login");
   };
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#2c3e50" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo con tamaño ajustado, fondo claro y borde */}
           <Box
             component="img"
             sx={{
-              height: 60, // Aumenta el tamaño del logo
+              height: 60,
               mr: 2,
-              p: 0, // Espaciado interno para darle más "aire"
-              backgroundColor: "#f4e4c1", // Fondo claro, similar al amarillo pálido
-              border: "2px solid #ECB444", // Borde amarillo para darle visibilidad
-              borderRadius: "8px", // Bordes redondeados
-              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)", // Sombra más marcada
+              p: 0,
+              backgroundColor: "#f4e4c1",
+              border: "2px solid #ECB444",
+              borderRadius: "8px",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
             }}
             alt="Logo"
             src={logo}
           />
 
-          {/* Botones del menú al lado del logo */}
           <Box sx={{ display: "flex", gap: 3 }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => handleNavigation(page)} // Maneja la navegación al hacer clic
+                onClick={() => handleNavigation(page)}
                 sx={{
-                  color: "#ECB444", // Cambié el color del texto a amarillo
+                  color: "#ECB444",
                   fontSize: "1rem",
                   fontWeight: "bold",
                   "&:hover": {
-                    backgroundColor: "#A3D6C4", // Cambié el color de fondo al hacer hover
-                    color: "#2c3e50", // Cambié el color del texto al hacer hover
+                    backgroundColor: "#A3D6C4",
+                    color: "#2c3e50",
                   },
                 }}
               >
@@ -74,41 +81,61 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          {/* Espacio flexible para alinear los botones a la derecha */}
           <Box sx={{ flexGrow: 1 }} />
 
-          {/* Botón de Iniciar Sesión */}
-          <Button
-            variant="outlined"
-            onClick={handleLogin} // Redirige al login
-            sx={{
-              color: "#ECB444", // Texto amarillo
-              borderColor: "#ECB444", // Borde amarillo
-              "&:hover": {
-                backgroundColor: "#ECB444",
-                color: "#2c3e50",
-              },
-              mr: 2, // Añade margen entre los botones
-            }}
-          >
-            Iniciar Sesión
-          </Button>
-
-          {/* Botón de Registrarse */}
-          <Button
-            variant="contained"
-            onClick={handleRegister} // Redirige al registro
-            sx={{
-              backgroundColor: "#ECB444", // Fondo amarillo
-              color: "#2c3e50", // Texto azul oscuro
-              "&:hover": {
-                backgroundColor: "#A3D6C4",
-                color: "#2c3e50",
-              },
-            }}
-          >
-            Registrarse
-          </Button>
+          {userName ? (
+            <>
+              <Typography sx={{ color: "#ECB444", mr: 2 }}>
+                Hola, {userName}
+              </Typography>
+              <Button
+                variant="outlined"
+                onClick={handleLogout}
+                sx={{
+                  color: "#ECB444",
+                  borderColor: "#ECB444",
+                  "&:hover": {
+                    backgroundColor: "#ECB444",
+                    color: "#2c3e50",
+                  },
+                }}
+              >
+                Cerrar Sesión
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="outlined"
+                onClick={() => navigate("/login")}
+                sx={{
+                  color: "#ECB444",
+                  borderColor: "#ECB444",
+                  "&:hover": {
+                    backgroundColor: "#ECB444",
+                    color: "#2c3e50",
+                  },
+                  mr: 2,
+                }}
+              >
+                Iniciar Sesión
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/register")}
+                sx={{
+                  backgroundColor: "#ECB444",
+                  color: "#2c3e50",
+                  "&:hover": {
+                    backgroundColor: "#A3D6C4",
+                    color: "#2c3e50",
+                  },
+                }}
+              >
+                Registrarse
+              </Button>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
