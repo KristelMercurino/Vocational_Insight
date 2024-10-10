@@ -66,7 +66,7 @@ function MyCarousel() {
         </Carousel>
       </Box>
 
-      {/* Sección "¿Quiénes somos?" con Container */}
+      {/* Sección "¿Quiénes somos?" */}
       <Container
         maxWidth="xl"
         sx={{
@@ -128,15 +128,14 @@ function Item({ item, goToForm }: ItemProps) {
         },
       }}
     >
-      <Box sx={{ position: "relative", overflow: "hidden" }}>
+      <Box sx={{ position: "relative", overflow: "hidden", height: "500px" }}>
         <img
           src={item.image}
           alt={item.name}
           style={{
             width: "100%",
-            height: "auto",
+            height: "100%",
             objectFit: "cover",
-            maxHeight: "500px",
             transition: "transform 0.5s ease",
           }}
         />

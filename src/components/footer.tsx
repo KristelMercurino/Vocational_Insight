@@ -3,14 +3,71 @@ import {
   Container,
   Grid,
   Typography,
-  Link,
   IconButton,
   TextField,
   Button,
 } from "@mui/material";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
+import { useState, useEffect } from "react";
+
+// URL del mapa de Google embebido
+const googleMapEmbedUrl =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.6323362346596!2d-71.41103832467329!3d-33.03783311205515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689df59c56e7b05%3A0xe50b5f2a040f4cb2!2sFrankarlos!5e0!3m2!1ses!2scl!4v1696875251634!5m2!1ses!2scl";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Cargar el correo electrónico del usuario autenticado desde localStorage
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail) {
+      setEmail(storedEmail); // Cargar el correo en el estado si existe
+    }
+  }, []);
+
+  const handleSubscription = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setMessage("Debe iniciar sesión para suscribirse.");
+      return;
+    }
+
+    setLoading(true); // Activar estado de carga mientras se procesa la solicitud
+
+    try {
+      const response = await fetch(
+        "https://vocational-insight-562114386469.southamerica-west1.run.app/suscripcion",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.estado_actualizado === 1) {
+          setMessage("Suscripción realizada con éxito.");
+          setIsSubscribed(true);
+        } else {
+          setMessage("Usuario ya está suscrito.");
+        }
+      } else {
+        setMessage("Error al suscribirse.");
+      }
+    } catch (error) {
+      setMessage("Error al procesar la solicitud.");
+    }
+
+    setLoading(false); // Desactivar estado de carga
+  };
+
   return (
     <Box
       sx={{
@@ -21,9 +78,27 @@ export default function Footer() {
         paddingBottom: 6,
       }}
     >
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="xl" // El contenedor sigue siendo amplio, pero no ocupa todo el ancho
+        sx={{
+          px: { xs: 4, md: 8 }, // Ajustar el margen lateral (padding horizontal)
+          marginLeft: { xs: "auto", md: "auto" }, // Centra el container
+          marginRight: { xs: "auto", md: "auto" }, // Centra el container
+        }}
+      >
         <Grid container spacing={4}>
-          {/* Sección 1: Sobre nosotros */}
+          {/* Sección 1: Mapa de Google en la izquierda */}
+          <Grid item xs={12} sm={6} md={4}>
+            <iframe
+              src={googleMapEmbedUrl}
+              width="100%"
+              height="250"
+              style={{ border: 0 }}
+              loading="lazy"
+            ></iframe>
+          </Grid>
+
+          {/* Sección 2: Sobre nosotros */}
           <Grid item xs={12} sm={6} md={4}>
             <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
               Sobre nosotros
@@ -33,22 +108,6 @@ export default function Footer() {
               estudiantes a descubrir su verdadera vocación. Brindamos recursos
               y guías para que los estudiantes tomen decisiones informadas sobre
               su futuro.
-            </Typography>
-          </Grid>
-
-          {/* Sección 2: Contacto */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
-              Contáctanos
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 1.5 }}>
-              774 NE 84th St Miami, FL 33879
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 1.5 }}>
-              Llámanos GRATIS +1 (800) 990 8877
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 1.5 }}>
-              email@email.com
             </Typography>
           </Grid>
 
@@ -63,7 +122,8 @@ export default function Footer() {
             <Box component="form" noValidate sx={{ display: "flex" }}>
               <TextField
                 variant="outlined"
-                placeholder="Ingresa tu correo"
+                value={email} // Cargar el correo almacenado en el campo de correo
+                disabled // Deshabilitar el campo para que no se pueda editar
                 fullWidth
                 sx={{
                   input: { color: "#f0f0f0" },
@@ -88,10 +148,20 @@ export default function Footer() {
                   ml: 1,
                   "&:hover": { bgcolor: "#388e3c" },
                 }}
+                onClick={handleSubscription}
+                disabled={loading || isSubscribed}
               >
                 Enviar
               </Button>
             </Box>
+            {message && (
+              <Typography
+                variant="body2"
+                sx={{ color: isSubscribed ? "green" : "red", mt: 1 }}
+              >
+                {message}
+              </Typography>
+            )}
           </Grid>
         </Grid>
 

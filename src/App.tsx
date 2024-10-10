@@ -11,6 +11,7 @@ import Footer from "./components/footer";
 import Login from "./components/Login";
 import Registro from "./components/Register";
 import RecuperarContraseña from "./components/RecuperarContraseña";
+import ModificarPerfil from "./components/ModificarPerfil";
 
 export default function App() {
   return (
@@ -28,6 +29,11 @@ export default function App() {
           <Route path="/registro" element={<Registro />} />
           <Route
             path="/RecuperarContraseña"
+            element={<RecuperarContraseña />}
+          />
+          <Route path="/modificarperfil" element={<ModificarPerfil />} />
+          <Route
+            path="/recuperarcontraseña"
             element={<RecuperarContraseña />}
           />
         </Routes>

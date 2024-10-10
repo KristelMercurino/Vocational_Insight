@@ -25,24 +25,21 @@ const NewsSection = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Llamada a la API para obtener las noticias
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        // Recupera el token desde localStorage
         const token = localStorage.getItem("authToken");
 
         if (!token) {
           throw new Error("No se encontró el token de autenticación.");
         }
 
-        // Realiza la solicitud al endpoint de noticias, incluyendo el token en los headers
         const response = await fetch(
           "https://vocational-insight-562114386469.southamerica-west1.run.app/noticias",
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`, // Pasa el token en los headers
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -52,16 +49,12 @@ const NewsSection = () => {
         }
 
         const data: News[] = await response.json();
-        setNewsDataMain(data); // Guardar las noticias en el estado
-        setLoading(false); // Ocultar el indicador de carga
+        setNewsDataMain(data);
+        setLoading(false);
       } catch (err) {
-        if (err instanceof Error) {
-          console.error(err.message);
-          setError(err.message);
-        } else {
-          console.error("Error desconocido", err);
-          setError("Ocurrió un error desconocido");
-        }
+        setError(
+          err instanceof Error ? err.message : "Ocurrió un error desconocido"
+        );
         setLoading(false);
       }
     };
@@ -86,7 +79,17 @@ const NewsSection = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ marginTop: 4 }}>
+    <Container
+      maxWidth="xl"
+      sx={{
+        backgroundColor: "#2c3e50ff", // Fondo oscuro para el contenedor principal
+        padding: 4,
+        borderRadius: "16px", // Bordes redondeados suaves
+        boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)", // Sombra en el contenedor
+        marginTop: 6,
+        marginBottom: 6,
+      }}
+    >
       {/* Título principal de la sección de noticias */}
       <Typography
         variant="h4"
@@ -107,43 +110,41 @@ const NewsSection = () => {
         gutterBottom
         sx={{
           fontWeight: "bold",
-          color: "#2c3e50",
+          color: "#f4f4f4", // Color de texto claro para que contraste con el fondo
         }}
-      >
-        Lo Último
-      </Typography>
+      ></Typography>
 
       <Grid container spacing={4}>
-        {/* Columna izquierda: Noticias principales */}
+        {/* Mantener el diseño original, con dos columnas principales */}
         {newsDataMain.slice(0, 10).map((news) => (
           <Grid item xs={12} sm={6} key={news.id_noticia}>
             <Card
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", sm: "row" },
-                borderRadius: 2,
-                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                transition: "transform 0.3s",
+                borderRadius: 4, // Bordes redondeados suaves en las tarjetas
+                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Sombra suave en las tarjetas
+                transition: "transform 0.3s, box-shadow 0.3s",
                 "&:hover": {
-                  transform: "scale(1.02)",
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)",
+                  transform: "scale(1.02)", // Crece ligeramente al pasar el mouse
+                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.15)", // Sombra más profunda al hacer hover
                 },
               }}
             >
-              {/* Imagen */}
+              {/* Imagen de la noticia */}
               <CardMedia
                 component="img"
                 image={news.imagen_noticia || "https://via.placeholder.com/300"}
                 alt={news.titulo}
                 sx={{
-                  width: { xs: "100%", sm: "150px" }, // Ajustar ancho
-                  height: "150px", // Altura fija para todas las imágenes
+                  width: { xs: "100%", sm: "150px" }, // Ajuste de ancho según el tamaño de la pantalla
+                  height: "150px", // Mantener una altura fija para las imágenes
                   objectFit: "cover", // Asegura que las imágenes no se deformen
-                  borderRadius: { sm: "8px 0 0 8px" },
+                  borderRadius: { sm: "8px 0 0 8px" }, // Bordes redondeados solo en el lado izquierdo para pantallas grandes
                 }}
               />
 
-              {/* Contenido */}
+              {/* Contenido de la noticia */}
               <CardContent
                 sx={{
                   flex: 1,
@@ -153,12 +154,16 @@ const NewsSection = () => {
                   backgroundColor: "#fff",
                   paddingLeft: { sm: 3 },
                   paddingTop: { xs: 2, sm: 0 },
-                  height: "150px", // Mantener altura uniforme con la imagen
+                  height: "150px", // Mantener la misma altura que la imagen
                 }}
               >
                 <Typography
                   variant="caption"
-                  sx={{ color: "#e74c3c", fontWeight: "bold" }}
+                  sx={{
+                    color: "#e74c3c", // Color de acento para la categoría de la noticia
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
                 >
                   Educación
                 </Typography>
@@ -167,7 +172,7 @@ const NewsSection = () => {
                   sx={{
                     fontWeight: "bold",
                     marginTop: 1,
-                    color: "#2c3e50",
+                    color: "#2c3e50", // Color de texto oscuro para el título de la noticia
                   }}
                 >
                   {news.titulo}
@@ -180,7 +185,7 @@ const NewsSection = () => {
                     color: "text.secondary",
                   }}
                 >
-                  <Typography variant="body2">
+                  <Typography variant="body2" color="text.secondary">
                     {news.fecha_publicacion}
                   </Typography>
                   <Typography variant="body2">

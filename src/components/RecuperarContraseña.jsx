@@ -35,16 +35,42 @@ const RecuperarContraseña = () => {
   }, [email]);
 
   // Manejar el envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setErrors({ email: "El correo electrónico no es válido" });
     } else {
       setErrors({});
-      // Aquí deberías enviar el email al backend
-      setMensaje(
-        "Si este correo está registrado, recibirás un enlace para recuperar tu contraseña."
-      );
+      try {
+        const response = await fetch(
+          "https://vocational-insight-562114386469.southamerica-west1.run.app/restablecer_contrasenna",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }), // Enviando el correo ingresado al backend
+          }
+        );
+
+        // Verificar la respuesta del servidor
+        const responseData = await response.json();
+
+        if (response.ok) {
+          setMensaje(responseData.message); // Muestra el mensaje de éxito
+        } else if (response.status === 404) {
+          setMensaje("Usuario no encontrado");
+        } else if (response.status === 400) {
+          setMensaje("Falta el email");
+        } else {
+          throw new Error(
+            responseData.message ||
+              "Ocurrió un error. Intenta de nuevo más tarde."
+          );
+        }
+      } catch (error) {
+        setMensaje(error.message);
+      }
     }
   };
 

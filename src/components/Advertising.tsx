@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import utfsmLogo from "../assets/img/logo-sm.jpg";
 import usachLogo from "../assets/img/logo-uds.jpg";
@@ -32,9 +31,9 @@ export default function UniversityAdvertisement() {
         padding: 4,
         color: "#fff",
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-        overflow: "hidden", // Evitar que las imágenes salgan del contenedor
+        overflow: "hidden", // Evitar que las imágenes se salgan del contenedor
         position: "relative",
-        height: { xs: "120px", sm: "150px", md: "200px" }, // Altura ajustada según el tamaño de pantalla
+        height: { xs: "180px", sm: "200px", md: "220px" }, // Ajustar altura según tamaño de pantalla
       }}
     >
       <Typography variant="h4" color="secondary" align="center" gutterBottom>
@@ -45,7 +44,8 @@ export default function UniversityAdvertisement() {
         sx={{
           display: "flex",
           whiteSpace: "nowrap", // Mantiene las imágenes en una línea
-          animation: "scroll 20s linear infinite", // Animación continua
+          animation: "scroll 25s linear infinite", // Animación continua
+          minHeight: "100%", // Asegura que las imágenes llenen el contenedor
         }}
       >
         {/* Imágenes del carrusel */}
@@ -56,9 +56,11 @@ export default function UniversityAdvertisement() {
             src={image}
             alt={`Imagen ${index + 1}`}
             sx={{
-              width: { xs: "120px", sm: "160px", md: "200px" }, // Tamaño ajustado para cada pantalla
+              width: { xs: "100px", sm: "150px", md: "180px" }, // Tamaño ajustado para pantallas pequeñas
               marginRight: { xs: "10px", sm: "15px", md: "20px" }, // Espacio entre imágenes ajustado
               height: "auto",
+              objectFit: "contain", // Mantener la proporción de la imagen
+              flexShrink: 0, // Evita que las imágenes se encojan
             }}
           />
         ))}
@@ -72,7 +74,9 @@ export default function UniversityAdvertisement() {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(calc(-200px * ${images.length / 2}));
+              transform: translateX(calc(-150px * ${
+                images.length / 2
+              })); /* Ajusta el tamaño según el total de imágenes */
             }
           }
         `}

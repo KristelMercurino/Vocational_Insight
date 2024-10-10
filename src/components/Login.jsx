@@ -10,6 +10,7 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
@@ -28,6 +29,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -80,6 +82,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateFields()) {
+      setIsLoading(true); // Iniciar la carga
       const requestBody = {
         email: formData.email,
         contrasena: formData.contraseña,
@@ -97,27 +100,27 @@ const Login = () => {
           }
         );
 
+        const data = await response.json();
+        console.log("Data recibida del login:", data); // Verifica la estructura de la respuesta
+
         if (!response.ok) {
-          const errorDetails = await response.json();
-          throw new Error(
-            errorDetails.message || "Error en el inicio de sesión"
-          );
+          throw new Error(data.message || "Error en el inicio de sesión");
         }
 
-        const data = await response.json();
-
-        // Guarda el token y el nombre en localStorage
+        // Guarda el token, nombre y correo en localStorage
         localStorage.setItem("authToken", data.token);
-        localStorage.setItem("userName", data.nombre); // Asegúrate de que 'nombre' es parte de la respuesta de la API
+        localStorage.setItem("userName", data.nombre);
+        localStorage.setItem("userEmail", data.email); // Asegúrate de que 'data.email' existe
 
         setMessage("Inicio de sesión exitoso");
 
-        // Redirigir a la página de inicio después de 2 segundos
         setTimeout(() => {
           navigate("/");
         }, 2000);
       } catch (error) {
         setMessage(error.message || "Error en el inicio de sesión");
+      } finally {
+        setIsLoading(false); // Detener la carga
       }
     }
   };
@@ -265,8 +268,9 @@ const Login = () => {
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
             }}
             onClick={handleSubmit}
+            disabled={isLoading} // Deshabilitar el botón durante la carga
           >
-            Iniciar sesión
+            {isLoading ? <CircularProgress size={24} /> : "Iniciar sesión"}
           </Button>
 
           {message && (
@@ -283,8 +287,14 @@ const Login = () => {
 
           <Typography align="center" style={{ marginTop: "1rem" }}>
             ¿No tienes cuenta?{" "}
-            <Link to="/Registro" style={{ color: "#ECB444" }}>
+            <Link to="/registro" style={{ color: "#ECB444" }}>
               Regístrate aquí
+            </Link>
+          </Typography>
+          <Typography align="center" style={{ marginTop: "1rem" }}>
+            ¿Olvidaste tu contraseña?{" "}
+            <Link to="/recuperarcontraseña" style={{ color: "#ECB444" }}>
+              Recuperala aquí
             </Link>
           </Typography>
         </Grid>
