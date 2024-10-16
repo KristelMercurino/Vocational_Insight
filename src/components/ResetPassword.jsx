@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   TextField,
   Button,
@@ -11,31 +11,25 @@ import {
 import { Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useLocation, useNavigate } from "react-router-dom"; // Importa useLocation y useNavigate
+import logo from "../assets/img/icono_logo_listo.png";
+import { useLocation } from "react-router-dom"; // Importa useLocation
 
 const ResetPassword = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const navigate = useNavigate();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // Detectar pantallas pequeñas
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [passwordStrength, setPasswordStrength] = useState(0); // Fortaleza de la contraseña
   const [mensaje, setMensaje] = useState("");
 
   // Capturar el token de la URL
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const token = searchParams.get("token");
-
-  useEffect(() => {
-    // Si no hay token en la URL, mostrar un mensaje de error
-    if (!token) {
-      setMensaje("Token inválido o faltante. No puedes restablecer la contraseña.");
-    }
-  }, [token]);
-
+  const location = useLocation(); // Usar el hook para obtener la ubicación
+  const searchParams = new URLSearchParams(location.search); // Crear un objeto URLSearchParams
+  const token = searchParams.get("token"); // Obtener el token
+  console.log(token);
   // Función para medir la fortaleza de la contraseña
   const calculatePasswordStrength = (password) => {
     let strength = 0;
@@ -55,11 +49,14 @@ const ResetPassword = () => {
 
   const validatePasswords = () => {
     let validationErrors = {};
+
     if (newPassword.length < 8) {
-      validationErrors.newPassword = "La contraseña debe tener al menos 8 caracteres.";
+      validationErrors.newPassword =
+        "La contraseña debe tener al menos 8 caracteres.";
     } else if (newPassword !== confirmPassword) {
       validationErrors.confirmPassword = "Las contraseñas no coinciden.";
     }
+
     setErrors(validationErrors);
     return Object.keys(validationErrors).length === 0;
   };
@@ -75,9 +72,9 @@ const ResetPassword = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Enviar el token en los headers
+              Authorization: `Bearer ${token}`, // Agregar el token en los headers
             },
-            body: JSON.stringify({ new_password: newPassword }), // Enviar la nueva contraseña
+            body: JSON.stringify({ new_password: newPassword }), // Enviando la nueva contraseña
           }
         );
 
@@ -85,13 +82,10 @@ const ResetPassword = () => {
 
         if (response.ok) {
           setMensaje("Tu contraseña ha sido restablecida exitosamente.");
-          // Redirigir al usuario a la página de inicio de sesión después de 2 segundos
-          setTimeout(() => {
-            navigate("/login");
-          }, 2000);
         } else {
           setMensaje(
-            responseData.message || "Ocurrió un error. Intenta de nuevo más tarde."
+            responseData.message ||
+              "Ocurrió un error. Intenta de nuevo más tarde."
           );
         }
       } catch (error) {
@@ -131,6 +125,14 @@ const ResetPassword = () => {
           padding: isSmallScreen ? "1rem" : "2rem",
         }}
       >
+        <img
+          src={logo}
+          alt="Logo"
+          style={{
+            width: isSmallScreen ? "100px" : "150px",
+            marginBottom: "20px",
+          }}
+        />
         <Typography
           variant="h5"
           align="center"
@@ -190,16 +192,6 @@ const ResetPassword = () => {
           >
             Ingresa tu nueva contraseña.
           </Typography>
-
-          {mensaje && (
-            <Typography
-              variant="body2"
-              color={mensaje.includes("exitosamente") ? "primary" : "error"}
-              style={{ marginBottom: "1rem" }}
-            >
-              {mensaje}
-            </Typography>
-          )}
 
           <form onSubmit={handleSubmit}>
             {/* Campo de nueva contraseña */}
@@ -267,6 +259,16 @@ const ResetPassword = () => {
               style={{ marginBottom: "1rem" }}
             />
 
+            {mensaje && (
+              <Typography
+                variant="body2"
+                color="primary"
+                style={{ marginBottom: "1rem" }}
+              >
+                {mensaje}
+              </Typography>
+            )}
+
             <Button
               variant="contained"
               color="primary"
@@ -287,4 +289,8 @@ const ResetPassword = () => {
           </form>
         </Grid>
       </Grid>
-    </
+    </Grid>
+  );
+};
+
+export default ResetPassword;

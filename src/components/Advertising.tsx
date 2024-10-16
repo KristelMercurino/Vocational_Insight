@@ -2,21 +2,38 @@ import { Box, Container, Typography } from "@mui/material";
 import utfsmLogo from "../assets/img/logo-sm.jpg";
 import usachLogo from "../assets/img/logo-uds.jpg";
 import pucLogo from "../assets/img/logo-udv.jpeg";
+import andresLogo from "../assets/img/logo-Andresbello.jpg";
+import duocLogo from "../assets/img/logo-Duoc.jpg";
+import santoLogo from "../assets/img/logo-SantoTomas.jpg";
+import conceLogo from "../assets/img/logo-Uconcepcion .jpg";
+import uvmLogo from "../assets/img/logo-UVM.jpg";
 
 // Lista de imágenes duplicada para lograr el bucle continuo
 const images = [
   utfsmLogo,
   usachLogo,
   pucLogo,
+  andresLogo,
+  duocLogo,
+  santoLogo,
+  conceLogo,
+  uvmLogo,
   utfsmLogo,
   usachLogo,
   pucLogo,
+  andresLogo,
+  duocLogo,
+  santoLogo,
+  conceLogo,
+  uvmLogo,
   utfsmLogo,
   usachLogo,
   pucLogo,
-  utfsmLogo,
-  usachLogo,
-  pucLogo,
+  andresLogo,
+  duocLogo,
+  santoLogo,
+  conceLogo,
+  uvmLogo,
 ];
 
 export default function UniversityAdvertisement() {
@@ -37,7 +54,7 @@ export default function UniversityAdvertisement() {
       }}
     >
       <Typography variant="h4" color="secondary" align="center" gutterBottom>
-        Universidades mejor evaluadas internacionalmente
+        Instituciones de educación superior en Chile
       </Typography>
 
       <Box

@@ -10,10 +10,6 @@ import {
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 
-// URL del mapa de Google embebido
-const googleMapEmbedUrl =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.6323362346596!2d-71.41103832467329!3d-33.03783311205515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689df59c56e7b05%3A0xe50b5f2a040f4cb2!2sFrankarlos!5e0!3m2!1ses!2scl!4v1696875251634!5m2!1ses!2scl";
-
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -79,27 +75,16 @@ export default function Footer() {
       }}
     >
       <Container
-        maxWidth="xl" // El contenedor sigue siendo amplio, pero no ocupa todo el ancho
+        maxWidth="xl"
         sx={{
-          px: { xs: 4, md: 8 }, // Ajustar el margen lateral (padding horizontal)
-          marginLeft: { xs: "auto", md: "auto" }, // Centra el container
-          marginRight: { xs: "auto", md: "auto" }, // Centra el container
+          px: { xs: 4, md: 8 },
+          marginLeft: { xs: "auto", md: "auto" },
+          marginRight: { xs: "auto", md: "auto" },
         }}
       >
         <Grid container spacing={4}>
-          {/* Sección 1: Mapa de Google en la izquierda */}
-          <Grid item xs={12} sm={6} md={4}>
-            <iframe
-              src={googleMapEmbedUrl}
-              width="100%"
-              height="250"
-              style={{ border: 0 }}
-              loading="lazy"
-            ></iframe>
-          </Grid>
-
-          {/* Sección 2: Sobre nosotros */}
-          <Grid item xs={12} sm={6} md={4}>
+          {/* Sección 1: Sobre nosotros */}
+          <Grid item xs={12} sm={6} md={6}>
             <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
               Sobre nosotros
             </Typography>
@@ -111,8 +96,8 @@ export default function Footer() {
             </Typography>
           </Grid>
 
-          {/* Sección 3: Suscripción a Newsletter */}
-          <Grid item xs={12} sm={6} md={4}>
+          {/* Sección 2: Suscripción a Newsletter */}
+          <Grid item xs={12} sm={6} md={6}>
             <Typography variant="h6" gutterBottom sx={{ color: "#4caf50" }}>
               Suscríbete a nuestro boletín
             </Typography>
@@ -126,17 +111,19 @@ export default function Footer() {
                 disabled // Deshabilitar el campo para que no se pueda editar
                 fullWidth
                 sx={{
-                  input: { color: "#f0f0f0" },
-                  borderColor: "#f0f0f0",
+                  input: {
+                    color: "#F0E68C", // Color más claro para mejorar la visibilidad
+                    fontWeight: "bold", // Agregar peso para hacer el texto más visible
+                  },
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": {
-                      borderColor: "#4caf50",
+                      borderColor: "#fff", // Bordes blancos
                     },
                     "&:hover fieldset": {
-                      borderColor: "#f0f0f0",
+                      borderColor: "#fff", // Bordes blancos en hover
                     },
                     "&.Mui-focused fieldset": {
-                      borderColor: "#4caf50",
+                      borderColor: "#fff", // Bordes blancos cuando está enfocado
                     },
                   },
                 }}

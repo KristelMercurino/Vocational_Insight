@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo-sf.png";
 
-const pages = ["Inicio", "Pricing", "Blog"];
+const pages = ["Inicio"];
 
 function ResponsiveAppBar() {
   const [userName, setUserName] = useState<string | null>(null);
@@ -38,10 +38,6 @@ function ResponsiveAppBar() {
     handleCloseNavMenu();
     if (page === "Inicio") {
       navigate("/");
-    } else if (page === "Pricing") {
-      navigate("/pricing");
-    } else if (page === "Blog") {
-      navigate("/blog");
     }
   };
 
@@ -63,11 +59,15 @@ function ResponsiveAppBar() {
               height: 60,
               mr: 2,
               display: { xs: "none", md: "flex" },
-              p: 0,
+              p: 1,
               backgroundColor: "#f4e4c1",
               border: "2px solid #ECB444",
               borderRadius: "8px",
               boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.05)", // Animación al pasar el ratón por encima
+              },
             }}
             alt="Logo"
             src={logo}
@@ -139,9 +139,12 @@ function ResponsiveAppBar() {
                   color: "#ECB444",
                   fontSize: "1rem",
                   fontWeight: "bold",
+                  transition: "all 0.3s ease-in-out",
                   "&:hover": {
                     backgroundColor: "#A3D6C4",
                     color: "#2c3e50",
+                    transform: "scale(1.05)", // Animación en hover
+                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
                   },
                 }}
               >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardMedia,
@@ -31,7 +31,7 @@ const NewsSection = () => {
         const token = localStorage.getItem("authToken");
 
         if (!token) {
-          throw new Error("No se encontró el token de autenticación.");
+          throw new Error("Registrate para estar al tanto de las noticias");
         }
 
         const response = await fetch(
@@ -45,7 +45,7 @@ const NewsSection = () => {
         );
 
         if (!response.ok) {
-          throw new Error("Error al obtener las noticias.");
+          throw new Error("Registrate para estar al tanto de las noticias.");
         }
 
         const data: News[] = await response.json();
@@ -139,7 +139,7 @@ const NewsSection = () => {
                 sx={{
                   width: { xs: "100%", sm: "150px" }, // Ajuste de ancho según el tamaño de la pantalla
                   height: "150px", // Mantener una altura fija para las imágenes
-                  objectFit: "cover", // Asegura que las imágenes no se deformen
+                  objectFit: "contain", // Mostrar la imagen completa dentro del contenedor
                   borderRadius: { sm: "8px 0 0 8px" }, // Bordes redondeados solo en el lado izquierdo para pantallas grandes
                 }}
               />
