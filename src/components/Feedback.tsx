@@ -7,63 +7,108 @@ import {
   Container,
   Snackbar,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import { Rating } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function FeedbackForm() {
-  const [rating, setRating] = useState<number | null>(null); // Valoración inicial nula
-  const [comment, setComment] = useState<string>(""); // Comentario inicial vacío
-  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
-  const [errorMessage, setErrorMessage] = useState<string>(""); // Mensaje de error para el Snackbar
+  const [rating, setRating] = useState<number | null>(null);
+  const [comment, setComment] = useState<string>("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
-    // Verificar si los campos están completos
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
     if (rating === null || comment.trim() === "") {
-      setErrorMessage("Por favor, completa ambos campos antes de enviar."); // Mensaje de error personalizado
-      setOpenSnackbar(true); // Mostrar el Snackbar
+      setErrorMessage("Por favor, completa ambos campos antes de enviar.");
+      setOpenSnackbar(true);
       return;
     }
 
-    // Si no hay errores, se puede proceder con el envío
-    console.log("Rating:", rating);
-    console.log("Comment:", comment);
-    // Aquí puedes manejar el envío de la valoración, como guardarla en una base de datos o enviarla a un servidor.
+    if (rating < 1 || rating > 5) {
+      setErrorMessage("La puntuación debe estar entre 1 y 5.");
+      setOpenSnackbar(true);
+      return;
+    }
+
+    const token = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId"); // Obtener el ID del usuario
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://vocational-insight-562114386469.southamerica-west1.run.app/feedback",
+        {
+          puntuacion: rating,
+          comentario: comment,
+          id_usuario: userId, // Enviar el ID del usuario
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Opinión enviada:", response.data);
+      setRating(null);
+      setComment("");
+      setSuccessMessage("Feedback enviado con éxito.");
+      setOpenSnackbar(true);
+      window.scrollTo(0, 0);
+
+      // Redirigir a la página de inicio
+      setTimeout(() => {
+        navigate("/"); // Cambiar la ruta a la que deseas redirigir
+      }, 2000);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 400) {
+          setErrorMessage("Error al enviar la opinión. Verifica los datos.");
+        } else if (error.response && error.response.status === 401) {
+          setErrorMessage("Token inválido o expirado.");
+        } else {
+          setErrorMessage("Error al enviar la opinión.");
+        }
+      } else {
+        setErrorMessage("Error desconocido.");
+      }
+      setOpenSnackbar(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Función para cerrar el Snackbar
-  const handleCloseSnackbar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpenSnackbar(false); // Cerrar el Snackbar
+    setOpenSnackbar(false);
   };
 
   return (
     <Container
       maxWidth="sm"
       sx={{
-        backgroundColor: "#2c3e50", // Fondo oscuro para respetar el tema
+        backgroundColor: "#2c3e50",
         padding: 4,
         borderRadius: 3,
         boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
         mt: 5,
-        color: "#ffffff", // Texto blanco para contraste con el fondo oscuro,
+        color: "#ffffff",
         marginTop: 10,
         marginBottom: 10,
       }}
     >
-      <Typography
-        variant="h6"
-        align="center"
-        gutterBottom
-        sx={{ color: "#ECB444" }}
-      >
-        ¿Qué tan útil te resultaron las recomendaciones para tu elección de
-        carrera?
+      <Typography variant="h6" align="center" gutterBottom sx={{ color: "#ECB444" }}>
+        ¿Qué tan útil te resultaron las recomendaciones para tu elección de carrera?
       </Typography>
 
       <Box sx={{ mt: 3, mb: 3 }}>
@@ -76,25 +121,25 @@ export default function FeedbackForm() {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           InputLabelProps={{
-            style: { color: "#ffffff" }, // Color blanco para el label
+            style: { color: "#ffffff" },
           }}
           sx={{
-            backgroundColor: "#34495e", // Fondo más claro para el input
-            color: "#ffffff", // Color blanco para el texto
+            backgroundColor: "#34495e",
+            color: "#ffffff",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#ECB444", // Borde en el color principal
+                borderColor: "#ECB444",
               },
               "&:hover fieldset": {
-                borderColor: "#f1c40f", // Borde al pasar el mouse
+                borderColor: "#f1c40f",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#f39c12", // Borde al estar enfocado
+                borderColor: "#f39c12",
               },
             },
           }}
           InputProps={{
-            style: { color: "#ffffff" }, // Color blanco para el texto del input
+            style: { color: "#ffffff" },
           }}
         />
       </Box>
@@ -109,7 +154,7 @@ export default function FeedbackForm() {
             setRating(newValue);
           }}
           sx={{
-            color: "#f1c40f", // Color amarillo para las estrellas
+            color: "#f1c40f",
           }}
         />
       </Box>
@@ -122,29 +167,26 @@ export default function FeedbackForm() {
           startIcon={<SendIcon />}
           onClick={handleSubmit}
           sx={{
-            backgroundColor: "#ECB444", // Botón en color amarillo
-            color: "#2c3e50", // Texto del botón en azul oscuro
+            backgroundColor: "#ECB444",
+            color: "#2c3e50",
             "&:hover": {
-              backgroundColor: "#f1c40f", // Cambia el color al hacer hover
+              backgroundColor: "#f1c40f",
             },
           }}
         >
-          Enviar Valoración
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Enviar Valoración"}
         </Button>
       </Box>
 
-      {/* Snackbar para mostrar el mensaje de error */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={4000} // Duración del Snackbar (4 segundos)
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
+      <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: "100%" }}>
           {errorMessage}
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={!!successMessage} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+          {successMessage}
         </Alert>
       </Snackbar>
     </Container>
