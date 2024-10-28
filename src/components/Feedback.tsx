@@ -25,8 +25,8 @@ export default function FeedbackForm() {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (rating === null || comment.trim() === "") {
-      setErrorMessage("Por favor, completa ambos campos antes de enviar.");
+    if (rating === null) {
+      setErrorMessage("Por favor, selecciona una puntuación.");
       setOpenSnackbar(true);
       return;
     }
@@ -37,18 +37,16 @@ export default function FeedbackForm() {
       return;
     }
 
-    const token = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId"); // Obtener el ID del usuario
-
     setLoading(true);
 
     try {
+      const token = localStorage.getItem("authToken");
+
       const response = await axios.post(
         "https://vocational-insight-562114386469.southamerica-west1.run.app/feedback",
         {
           puntuacion: rating,
           comentario: comment,
-          id_usuario: userId, // Enviar el ID del usuario
         },
         {
           headers: {
@@ -66,12 +64,12 @@ export default function FeedbackForm() {
 
       // Redirigir a la página de inicio
       setTimeout(() => {
-        navigate("/"); // Cambiar la ruta a la que deseas redirigir
+        navigate("/");
       }, 2000);
-    } catch (error: unknown) {
+    } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response && error.response.status === 400) {
-          setErrorMessage("Error al enviar la opinión. Verifica los datos.");
+          setErrorMessage("Ya has enviado un feedback anteriormente.");
         } else if (error.response && error.response.status === 401) {
           setErrorMessage("Token inválido o expirado.");
         } else {

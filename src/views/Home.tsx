@@ -1,3 +1,4 @@
+import React from "react"; // Importar React
 import Carousel from "../components/Carousel";
 import Cards from "../components/Cards";
 import Advertising from "../components/Advertising";
