@@ -14,6 +14,7 @@ import RecuperarContraseña from "./components/RecuperarContraseña";
 import ModificarPerfil from "./components/ModificarPerfil";
 import ResetPassword from "./components/ResetPassword"; // Importamos el componente ResetPassword
 import UnsubscribeNewsletter from "./components/unsubscribenewsletter"; // Importamos el componente correctamente
+import Record from "./components/record"; // Importamos el componente Record
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/RecuperarContraseña" element={<RecuperarContraseña />} />
           <Route path="/modificarperfil" element={<ModificarPerfil />} />
           <Route path="/desuscribirse" element={<UnsubscribeNewsletter />} /> {/* Ruta corregida */}
+          <Route path="/record" element={<Record />} /> {/* Nueva ruta añadida */}
         </Routes>
         <Footer />
       </Router>

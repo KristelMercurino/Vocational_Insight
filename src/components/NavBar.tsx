@@ -173,6 +173,9 @@ function ResponsiveAppBar() {
                   <MenuItem onClick={() => navigate("/modificarperfil")}>
                     Mi Perfil
                   </MenuItem>
+                  <MenuItem onClick={() => navigate("/record")}>
+                    Historial
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                 </Menu>
               </>
