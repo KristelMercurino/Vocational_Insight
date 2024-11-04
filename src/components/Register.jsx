@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -9,10 +9,17 @@ import {
   IconButton,
   InputAdornment,
   LinearProgress,
+  CircularProgress,
 } from "@mui/material";
-import { Visibility, VisibilityOff, Email, AccountCircle, Lock } from "@mui/icons-material";
+import {
+  Visibility,
+  VisibilityOff,
+  Email,
+  AccountCircle,
+  Lock,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import logo from '../assets/img/icono_logo_listo.png'; // Asegúrate de que la ruta del logo sea correcta
+import logo from "../assets/img/icono_logo_listo.png";
 
 const RegistroUsuario = () => {
   const [formData, setFormData] = useState({
@@ -20,50 +27,171 @@ const RegistroUsuario = () => {
     apellido: "",
     genero: "",
     fecha_nac: "",
+    id_region: "",
     id_ciudad: "",
     email: "",
     contrasena: "",
     confirm_contrasena: "",
   });
 
+  const [regions, setRegions] = useState([]);
+  const [cities, setCities] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  // Estados para manejo de carga y errores en fetch
+  const [loadingRegions, setLoadingRegions] = useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+
+  useEffect(() => {
+    fetchRegions();
+  }, []);
+
+  // Función para obtener las regiones
+  const fetchRegions = async () => {
+    setLoadingRegions(true);
+    try {
+      const response = await fetch(
+        "https://vocational-insight-562114386469.southamerica-west1.run.app/regiones"
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setRegions(data);
+      setFetchError(null);
+    } catch (error) {
+      console.error("Error fetching regions:", error);
+      setRegions([]);
+      setFetchError("Error al obtener las regiones. Inténtalo de nuevo.");
+    } finally {
+      setLoadingRegions(false);
+    }
+  };
+
+  // Función para obtener las ciudades de una región
+  const fetchCities = async (regionId) => {
+    setLoadingCities(true);
+    try {
+      const response = await fetch(
+        `https://vocational-insight-562114386469.southamerica-west1.run.app/regiones/${regionId}/ciudades`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setCities(data);
+      setFetchError(null);
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+      setCities([]);
+      setFetchError("Error al obtener las ciudades. Inténtalo de nuevo.");
+    } finally {
+      setLoadingCities(false);
+    }
+  };
+
+  const handleRegionChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+    const updatedFormData = {
       ...formData,
       [name]: value,
-    });
-    validateField(name, value);
-    
-    if (name === 'contrasena') {
+      id_ciudad: "", // Resetea la ciudad seleccionada
+    };
+    setFormData(updatedFormData);
+    setCities([]); // Limpia las ciudades actuales
+    fetchCities(value);
+    validateField(name, value, updatedFormData);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFormData = {
+      ...formData,
+      [name]: value,
+    };
+    setFormData(updatedFormData);
+    validateField(name, value, updatedFormData);
+
+    if (name === "contrasena") {
       evaluatePasswordStrength(value);
     }
   };
 
-  const validateField = (name, value) => {
-    let errorMsg = '';
-    if (name === 'nombre' && !value) {
-      errorMsg = 'Por favor, ingrese su nombre';
-    } else if (name === 'apellido' && !value) {
-      errorMsg = 'Por favor, ingrese su apellido';
-    } else if (name === 'genero' && !value) {
-      errorMsg = 'Seleccione su género';
-    } else if (name === 'email' && (!value || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))) {
-      errorMsg = 'Por favor, ingrese un correo electrónico válido';
-    } else if (name === 'contrasena' && (!value || value.length < 8)) {
-      errorMsg = 'La contraseña debe tener al menos 8 caracteres';
-    } else if (name === 'confirm_contrasena' && value !== formData.contrasena) {
-      errorMsg = 'Las contraseñas no coinciden';
+  const validateField = (name, value, formData) => {
+    let errorMsg = "";
+    if (name === "nombre" && !value) {
+      errorMsg = "Por favor, ingrese su nombre";
+    } else if (name === "apellido" && !value) {
+      errorMsg = "Por favor, ingrese su apellido";
+    } else if (name === "genero" && !value) {
+      errorMsg = "Seleccione su género";
+    } else if (
+      name === "email" &&
+      (!value || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+    ) {
+      errorMsg = "Por favor, ingrese un correo electrónico válido";
+    } else if (name === "contrasena") {
+      if (!value || value.length < 8) {
+        errorMsg = "La contraseña debe tener al menos 8 caracteres";
+      }
+      // Validar si confirm_contrasena coincide
+      if (
+        formData.confirm_contrasena &&
+        formData.confirm_contrasena !== value
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirm_contrasena: "Las contraseñas no coinciden",
+        }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          confirm_contrasena: "",
+        }));
+      }
+    } else if (name === "confirm_contrasena") {
+      if (value !== formData.contrasena) {
+        errorMsg = "Las contraseñas no coinciden";
+      } else {
+        errorMsg = "";
+      }
+    } else if (name === "id_region" && !value) {
+      errorMsg = "Por favor, seleccione su región";
+    } else if (name === "id_ciudad" && !value) {
+      errorMsg = "Por favor, seleccione su ciudad";
     }
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: errorMsg,
     }));
+  };
+
+  const validateFields = () => {
+    const newErrors = {};
+    if (!formData.nombre) newErrors.nombre = "Por favor, ingrese su nombre";
+    if (!formData.apellido)
+      newErrors.apellido = "Por favor, ingrese su apellido";
+    if (!formData.genero) newErrors.genero = "Seleccione su género";
+    if (
+      !formData.email ||
+      !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)
+    )
+      newErrors.email = "Por favor, ingrese un correo electrónico válido";
+    if (!formData.contrasena || formData.contrasena.length < 8)
+      newErrors.contrasena = "La contraseña debe tener al menos 8 caracteres";
+    if (formData.confirm_contrasena !== formData.contrasena)
+      newErrors.confirm_contrasena = "Las contraseñas no coinciden";
+    if (!formData.id_region)
+      newErrors.id_region = "Por favor, seleccione su región";
+    if (!formData.id_ciudad)
+      newErrors.id_ciudad = "Por favor, seleccione su ciudad";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const evaluatePasswordStrength = (password) => {
@@ -75,14 +203,35 @@ const RegistroUsuario = () => {
     setPasswordStrength(strength);
   };
 
+  const getPasswordStrengthLabel = () => {
+    switch (passwordStrength) {
+      case 1:
+        return "Débil";
+      case 2:
+        return "Media";
+      case 3:
+        return "Fuerte";
+      case 4:
+        return "Muy fuerte";
+      default:
+        return "";
+    }
+  };
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  const toggleShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validar que todos los campos estén completos y correctos
     if (!validateFields()) return;
 
     // Formatear la fecha correctamente
-    const dateParts = formData.fecha_nac.split("-");
-    const formattedDate = `${dateParts[0]}/${dateParts[1]}/${dateParts[2]}`;
+    let formattedDate = formData.fecha_nac;
+    if (formData.fecha_nac) {
+      const dateParts = formData.fecha_nac.split("-");
+      formattedDate = `${dateParts[0]}/${dateParts[1]}/${dateParts[2]}`;
+    }
 
     const updatedFormData = {
       ...formData,
@@ -107,91 +256,80 @@ const RegistroUsuario = () => {
         throw new Error("Error en el registro. Revisa los campos.");
       }
     } catch (error) {
-      setErrors({ global: "Ocurrió un error al registrar el usuario. Inténtalo de nuevo." });
-    }
-  };
-
-  const validateFields = () => {
-    const newErrors = {};
-    if (!formData.nombre) newErrors.nombre = 'Por favor, ingrese su nombre';
-    if (!formData.apellido) newErrors.apellido = 'Por favor, ingrese su apellido';
-    if (!formData.genero) newErrors.genero = 'Seleccione su género';
-    if (!formData.email || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) newErrors.email = 'Por favor, ingrese un correo electrónico válido';
-    if (!formData.contrasena || formData.contrasena.length < 8) newErrors.contrasena = 'La contraseña debe tener al menos 8 caracteres';
-    if (formData.confirm_contrasena !== formData.contrasena) newErrors.confirm_contrasena = 'Las contraseñas no coinciden';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const toggleShowPassword = () => setShowPassword(!showPassword);
-  const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-
-  const getPasswordStrengthLabel = () => {
-    switch (passwordStrength) {
-      case 1: return 'Débil';
-      case 2: return 'Media';
-      case 3: return 'Fuerte';
-      case 4: return 'Muy fuerte';
-      default: return '';
+      console.error("Error registrando usuario:", error);
+      setErrors({
+        global:
+          "Ocurrió un error al registrar el usuario. Inténtalo de nuevo.",
+      });
     }
   };
 
   return (
-    <Grid container style={{ minHeight: '100vh', backgroundColor: '#2c3e50' }}>
+    <Grid
+      container
+      style={{ minHeight: "100vh", backgroundColor: "#2c3e50" }}
+    >
       {/* Sección izquierda con logo y texto */}
-      <Grid 
-        item xs={12} sm={6} md={6} 
-        style={{ 
-          backgroundColor: '#2c3e50', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          flexDirection: 'column', 
-          color: '#fff', 
-          padding: '2rem' 
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        style={{
+          backgroundColor: "#2c3e50",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          color: "#fff",
+          padding: "2rem",
         }}
       >
-        <img 
-          src={logo} 
-          alt="Logo" 
-          style={{ 
-            width: '150px', 
-            marginBottom: '20px' 
-          }} 
+        <img
+          src={logo}
+          alt="Logo"
+          style={{
+            width: "150px",
+            marginBottom: "20px",
+          }}
         />
-        <Typography 
-          variant="h5" 
-          align="center" 
-          style={{ 
-            fontWeight: 'bold', 
-            marginBottom: '20px', 
-            fontSize: '24px' 
+        <Typography
+          variant="h5"
+          align="center"
+          style={{
+            fontWeight: "bold",
+            marginBottom: "20px",
+            fontSize: "24px",
           }}
         >
           Vocational Insight
         </Typography>
-        <Typography 
-          variant="body1" 
-          align="center" 
-          style={{ 
-            maxWidth: '300px', 
-            lineHeight: '1.4', 
-            fontSize: '16px' 
+        <Typography
+          variant="body1"
+          align="center"
+          style={{
+            maxWidth: "300px",
+            lineHeight: "1.4",
+            fontSize: "16px",
           }}
         >
-          ¡Crea tu cuenta y empieza a descubrir tu camino académico y profesional!
+          ¡Crea tu cuenta y empieza a descubrir tu camino académico y
+          profesional!
         </Typography>
       </Grid>
 
       {/* Sección derecha con el formulario */}
-      <Grid 
-        item xs={12} sm={6} md={6} 
-        style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          backgroundColor: '#2c3e50', 
-          padding: '2rem' 
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#2c3e50",
+          padding: "2rem",
         }}
       >
         <Box
@@ -208,7 +346,11 @@ const RegistroUsuario = () => {
             variant="h5"
             gutterBottom
             align="center"
-            sx={{ fontWeight: "bold", marginBottom: "1rem", color: "#ECB444" }}
+            sx={{
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              color: "#ECB444",
+            }}
           >
             Registro de Usuario
           </Typography>
@@ -285,20 +427,62 @@ const RegistroUsuario = () => {
               helperText={errors.fecha_nac}
             />
 
-            {/* Ciudad y correo electrónico */}
+            {/* Dropdown para Región */}
+            <TextField
+              id="id_region"
+              name="id_region"
+              label="Región"
+              select
+              value={formData.id_region}
+              onChange={handleRegionChange}
+              error={!!errors.id_region}
+              helperText={errors.id_region}
+              fullWidth
+              margin="normal"
+            >
+              {loadingRegions ? (
+                <MenuItem disabled>
+                  <CircularProgress size={24} />
+                  Cargando regiones...
+                </MenuItem>
+              ) : (
+                regions.map((region) => (
+                  <MenuItem key={region.id_region} value={region.id_region}>
+                    {region.nombre_region}
+                  </MenuItem>
+                ))
+              )}
+            </TextField>
+
+            {/* Dropdown para Ciudad */}
             <TextField
               id="id_ciudad"
               name="id_ciudad"
-              label="ID de Ciudad"
-              type="number"
+              label="Ciudad"
+              select
               value={formData.id_ciudad}
               onChange={handleChange}
-              fullWidth
-              margin="normal"
               error={!!errors.id_ciudad}
               helperText={errors.id_ciudad}
-            />
+              fullWidth
+              margin="normal"
+              disabled={!formData.id_region || loadingCities}
+            >
+              {loadingCities ? (
+                <MenuItem disabled>
+                  <CircularProgress size={24} />
+                  Cargando ciudades...
+                </MenuItem>
+              ) : (
+                cities.map((city) => (
+                  <MenuItem key={city.id_ciudad} value={city.id_ciudad}>
+                    {city.nombre_ciudad}
+                  </MenuItem>
+                ))
+              )}
+            </TextField>
 
+            {/* Correo electrónico */}
             <TextField
               id="email"
               name="email"
@@ -347,9 +531,22 @@ const RegistroUsuario = () => {
               }}
             />
             {formData.contrasena && (
-              <div style={{ marginTop: '0.5rem' }}>
-                <LinearProgress variant="determinate" value={passwordStrength * 25} />
-                <Typography variant="caption" style={{ color: passwordStrength === 1 ? 'red' : passwordStrength === 2 ? 'orange' : 'green' }}>
+              <div style={{ marginTop: "0.5rem" }}>
+                <LinearProgress
+                  variant="determinate"
+                  value={passwordStrength * 25}
+                />
+                <Typography
+                  variant="caption"
+                  style={{
+                    color:
+                      passwordStrength === 1
+                        ? "red"
+                        : passwordStrength === 2
+                        ? "orange"
+                        : "green",
+                  }}
+                >
                   {getPasswordStrengthLabel()}
                 </Typography>
               </div>
@@ -375,7 +572,11 @@ const RegistroUsuario = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={toggleShowConfirmPassword}>
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      {showConfirmPassword ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -383,8 +584,22 @@ const RegistroUsuario = () => {
             />
 
             {errors.global && (
-              <Typography color="error" align="center" sx={{ marginTop: "1rem" }}>
+              <Typography
+                color="error"
+                align="center"
+                sx={{ marginTop: "1rem" }}
+              >
                 {errors.global}
+              </Typography>
+            )}
+
+            {fetchError && (
+              <Typography
+                color="error"
+                align="center"
+                sx={{ marginTop: "1rem" }}
+              >
+                {fetchError}
               </Typography>
             )}
 
