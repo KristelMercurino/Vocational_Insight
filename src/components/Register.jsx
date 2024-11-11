@@ -40,6 +40,8 @@ const RegistroUsuario = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga
+  const [message, setMessage] = useState(""); // Estado para el mensaje de éxito o error
   const navigate = useNavigate();
 
   // Estados para manejo de carga y errores en fetch
@@ -226,6 +228,9 @@ const RegistroUsuario = () => {
     e.preventDefault();
     if (!validateFields()) return;
 
+    setIsLoading(true); // Activar la animación de carga
+    setMessage(""); // Limpiar mensaje previo
+
     // Formatear la fecha correctamente
     let formattedDate = formData.fecha_nac;
     if (formData.fecha_nac) {
@@ -251,16 +256,25 @@ const RegistroUsuario = () => {
       );
 
       if (response.status === 201) {
-        navigate("/login");
+        setMessage("Registro exitoso");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } else if (response.status === 409) {
+        setMessage("Ya existe una cuenta con este correo");
       } else {
-        throw new Error("Error en el registro. Revisa los campos.");
+        const data = await response.json();
+        if (data.message && data.message.includes("User already exists")) {
+          setMessage("Ya existe una cuenta con este correo");
+        } else {
+          throw new Error("Error en el registro. Revisa los campos.");
+        }
       }
     } catch (error) {
       console.error("Error registrando usuario:", error);
-      setErrors({
-        global:
-          "Ocurrió un error al registrar el usuario. Inténtalo de nuevo.",
-      });
+      setMessage("Ya existe una cuenta con este correo");
+    } finally {
+      setIsLoading(false); // Desactivar la animación de carga
     }
   };
 
@@ -361,6 +375,7 @@ const RegistroUsuario = () => {
               id="nombre"
               name="nombre"
               label="Nombre"
+              placeholder="Ingrese su nombre"
               value={formData.nombre}
               onChange={handleChange}
               error={!!errors.nombre}
@@ -379,6 +394,7 @@ const RegistroUsuario = () => {
               id="apellido"
               name="apellido"
               label="Apellido"
+              placeholder="Ingrese su apellido"
               value={formData.apellido}
               onChange={handleChange}
               error={!!errors.apellido}
@@ -400,6 +416,7 @@ const RegistroUsuario = () => {
               name="genero"
               label="Género"
               select
+              placeholder="Seleccione su género"
               value={formData.genero}
               onChange={handleChange}
               error={!!errors.genero}
@@ -419,6 +436,7 @@ const RegistroUsuario = () => {
               InputLabelProps={{
                 shrink: true,
               }}
+              placeholder="Seleccione su fecha de nacimiento"
               value={formData.fecha_nac}
               onChange={handleChange}
               fullWidth
@@ -433,6 +451,7 @@ const RegistroUsuario = () => {
               name="id_region"
               label="Región"
               select
+              placeholder="Seleccione su región"
               value={formData.id_region}
               onChange={handleRegionChange}
               error={!!errors.id_region}
@@ -460,6 +479,7 @@ const RegistroUsuario = () => {
               name="id_ciudad"
               label="Ciudad"
               select
+              placeholder="Seleccione su ciudad"
               value={formData.id_ciudad}
               onChange={handleChange}
               error={!!errors.id_ciudad}
@@ -488,6 +508,7 @@ const RegistroUsuario = () => {
               name="email"
               label="Correo electrónico"
               type="email"
+              placeholder="Ingrese su correo electrónico"
               value={formData.email}
               onChange={handleChange}
               fullWidth
@@ -509,6 +530,7 @@ const RegistroUsuario = () => {
               name="contrasena"
               label="Contraseña"
               type={showPassword ? "text" : "password"}
+              placeholder="Ingrese su contraseña"
               value={formData.contrasena}
               onChange={handleChange}
               fullWidth
@@ -557,6 +579,7 @@ const RegistroUsuario = () => {
               name="confirm_contrasena"
               label="Confirmar Contraseña"
               type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirme su contraseña"
               value={formData.confirm_contrasena}
               onChange={handleChange}
               fullWidth
@@ -618,9 +641,22 @@ const RegistroUsuario = () => {
                 },
               }}
               fullWidth
+              disabled={isLoading} // Deshabilitar el botón durante la carga
             >
-              Registrar
+              {isLoading ? <CircularProgress size={24} /> : "Registrar"}
             </Button>
+
+            {message && (
+              <Typography
+                align="center"
+                sx={{
+                  marginTop: "1rem",
+                  color: message === "Registro exitoso" ? "green" : "red",
+                }}
+              >
+                {message}
+              </Typography>
+            )}
           </form>
         </Box>
       </Grid>
