@@ -8,8 +8,6 @@ import {
   InputAdornment,
   Typography,
   IconButton,
-  Checkbox,
-  FormControlLabel,
   CircularProgress,
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -24,7 +22,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     contraseña: "",
-    rememberMe: false,
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -39,13 +36,6 @@ const Login = () => {
       [name]: value,
     });
     validateField(name, value);
-  };
-
-  const handleCheckboxChange = (e) => {
-    setFormData({
-      ...formData,
-      rememberMe: e.target.checked,
-    });
   };
 
   const validateField = (name, value) => {
@@ -100,23 +90,22 @@ const Login = () => {
           }
         );
 
-        const data = await response.json();
-        console.log("Data recibida del login:", data); // Verifica la estructura de la respuesta
+        const data = await response.json().catch(() => {
+          throw new Error("La cuenta no existe o no está registrada.");
+        });
 
         if (!response.ok) {
           throw new Error(data.message || "Error en el inicio de sesión");
         }
 
-        // Guarda el token, nombre y correo en localStorage
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("userName", data.nombre);
-        localStorage.setItem("userEmail", data.email); // Asegúrate de que 'data.email' existe
+        localStorage.setItem("userEmail", data.email);
 
         setMessage("Inicio de sesión exitoso");
 
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        navigate("/");
+        window.location.reload();
       } catch (error) {
         setMessage(error.message || "Error en el inicio de sesión");
       } finally {
@@ -158,11 +147,22 @@ const Login = () => {
           align="center"
           style={{
             fontWeight: "bold",
-            marginBottom: "20px",
+            marginBottom: "10px",
             fontSize: isSmallScreen ? "20px" : "24px",
           }}
         >
           Vocational Insight
+        </Typography>
+        <Typography
+          variant="body1"
+          align="center"
+          style={{
+            fontSize: isSmallScreen ? "14px" : "16px",
+            maxWidth: "80%",
+          }}
+        >
+          ¡Haz que cada paso cuente y encuentra la carrera que te impulse a
+          alcanzar tu máximo potencial y éxito!
         </Typography>
       </Grid>
 
@@ -241,17 +241,6 @@ const Login = () => {
               fullWidth
             />
           </FormControl>
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={formData.rememberMe}
-                onChange={handleCheckboxChange}
-              />
-            }
-            label="Dejar sesión iniciada"
-            style={{ marginBottom: "1rem" }}
-          />
 
           <Button
             variant="contained"

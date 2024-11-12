@@ -12,6 +12,9 @@ import Login from "./components/Login";
 import Registro from "./components/Register";
 import RecuperarContraseña from "./components/RecuperarContraseña";
 import ModificarPerfil from "./components/ModificarPerfil";
+import ResetPassword from "./components/ResetPassword"; // Importamos el componente ResetPassword
+import UnsubscribeNewsletter from "./components/Unsubscribenewsletter"; // Importamos el componente correctamente
+import Record from "./components/Record"; // Importamos el componente Record
 
 export default function App() {
   return (
@@ -28,14 +31,22 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route
+            path="/reset_password_confirm"
+            element={<ResetPassword />}
+          />{" "}
+          {/* Ruta añadida */}
+          <Route
             path="/RecuperarContraseña"
             element={<RecuperarContraseña />}
           />
           <Route path="/modificarperfil" element={<ModificarPerfil />} />
           <Route
-            path="/recuperarcontraseña"
-            element={<RecuperarContraseña />}
-          />
+            path="/desuscribirse"
+            element={<UnsubscribeNewsletter />}
+          />{" "}
+          {/* Ruta corregida */}
+          <Route path="/record" element={<Record />} />{" "}
+          {/* Nueva ruta añadida */}
         </Routes>
         <Footer />
       </Router>

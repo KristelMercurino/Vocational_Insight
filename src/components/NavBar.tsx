@@ -9,6 +9,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo-sf.png";
 
@@ -17,6 +18,7 @@ const pages = ["Inicio"];
 function ResponsiveAppBar() {
   const [userName, setUserName] = useState<string | null>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +34,14 @@ function ResponsiveAppBar() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
   const handleNavigation = (page: string) => {
@@ -66,7 +76,7 @@ function ResponsiveAppBar() {
               boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
               transition: "transform 0.3s ease-in-out",
               "&:hover": {
-                transform: "scale(1.05)", // Animación al pasar el ratón por encima
+                transform: "scale(1.05)",
               },
             }}
             alt="Logo"
@@ -88,20 +98,12 @@ function ResponsiveAppBar() {
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
+              sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={() => handleNavigation(page)}>
@@ -143,7 +145,7 @@ function ResponsiveAppBar() {
                   "&:hover": {
                     backgroundColor: "#A3D6C4",
                     color: "#2c3e50",
-                    transform: "scale(1.05)", // Animación en hover
+                    transform: "scale(1.05)",
                     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
                   },
                 }}
@@ -153,49 +155,31 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          {/* Usuario, perfil y botón de cerrar sesión */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" }, // Ajuste de columna para pantallas pequeñas
-              alignItems: "center",
-              gap: 1, // Ajuste del espaciado
-            }}
-          >
+          {/* Usuario, menú desplegable o botones de inicio/registro */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             {userName ? (
               <>
-                <Button
-                  variant="outlined"
-                  onClick={() => navigate("/modificarperfil")}
-                  sx={{
-                    color: "#ECB444",
-                    borderColor: "#ECB444",
-                    "&:hover": {
-                      backgroundColor: "#ECB444",
-                      color: "#2c3e50",
-                    },
-                  }}
-                >
-                  Mi Perfil
-                </Button>
-                <Typography sx={{ color: "#ECB444", mr: 2 }}>
-                  Hola, {userName || "Usuario"}{" "}
+                <IconButton onClick={handleOpenUserMenu}>
+                  <Avatar alt={userName} src="/static/images/avatar/1.jpg" />
+                </IconButton>
+                <Typography sx={{ color: "#ECB444", fontWeight: "bold" }}>
+                  Mi cuenta
                 </Typography>
-                <Button
-                  variant="outlined"
-                  onClick={handleLogout}
-                  sx={{
-                    color: "#ECB444",
-                    borderColor: "#ECB444",
-                    "&:hover": {
-                      backgroundColor: "#ECB444",
-                      color: "#2c3e50",
-                    },
-                    mt: { xs: 1, sm: 0 },
-                  }}
+                <Menu
+                  anchorEl={anchorElUser}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
                 >
-                  Cerrar Sesión
-                </Button>
+                  <MenuItem onClick={() => navigate("/modificarperfil")}>
+                    Mi Perfil
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/record")}>
+                    Historial
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                </Menu>
               </>
             ) : (
               <>
@@ -209,8 +193,6 @@ function ResponsiveAppBar() {
                       backgroundColor: "#ECB444",
                       color: "#2c3e50",
                     },
-                    mr: { sm: 2 },
-                    mb: { xs: 1, sm: 0 },
                   }}
                 >
                   Iniciar Sesión

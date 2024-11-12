@@ -48,8 +48,8 @@ function MyCarousel() {
           backgroundColor: "#2c3e50ff",
           padding: 4,
           borderRadius: 3,
-          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
           width: "100%",
+          boxShadow: "none", // Eliminar la sombra del carrusel
         }}
       >
         <Carousel
@@ -58,7 +58,7 @@ function MyCarousel() {
           animation="slide"
           duration={600}
           indicators={true}
-          sx={{ mb: 4 }}
+          sx={{ mb: 0 }}
         >
           {items.map((item, i) => (
             <Item key={i} item={item} goToForm={goToForm} />
@@ -75,7 +75,7 @@ function MyCarousel() {
           backgroundColor: "#2c3e50ff",
           color: "#fff",
           borderRadius: 3,
-          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
+          boxShadow: "none", // Eliminar la sombra de la sección "¿Quiénes somos?"
         }}
       >
         <Typography
@@ -121,11 +121,11 @@ function Item({ item, goToForm }: ItemProps) {
         overflow: "hidden",
         borderRadius: 3,
         backgroundColor: "#f5f5f5",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        transition: "transform 0.3s ease",
         "&:hover": {
           transform: "scale(1.03)",
-          boxShadow: "0 15px 30px rgba(0, 0, 0, 0.3)",
         },
+        boxShadow: "none", // Eliminar la sombra de cada ítem del carrusel
       }}
     >
       <Box sx={{ position: "relative", overflow: "hidden", height: "500px" }}>

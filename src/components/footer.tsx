@@ -11,16 +11,16 @@ import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState(""); // Estado del correo
+  const [isSubscribed, setIsSubscribed] = useState(false); // Estado de suscripción
+  const [message, setMessage] = useState(""); // Mensaje de feedback
+  const [loading, setLoading] = useState(false); // Estado de carga
 
-  // Cargar el correo electrónico del usuario autenticado desde localStorage
+  // Cargar el correo electrónico del usuario desde localStorage al montar el componente
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
     if (storedEmail) {
-      setEmail(storedEmail); // Cargar el correo en el estado si existe
+      setEmail(storedEmail); // Actualizar el estado si hay correo almacenado
     }
   }, []);
 
@@ -31,7 +31,7 @@ export default function Footer() {
       return;
     }
 
-    setLoading(true); // Activar estado de carga mientras se procesa la solicitud
+    setLoading(true); // Activar estado de carga
 
     try {
       const response = await fetch(
@@ -78,8 +78,8 @@ export default function Footer() {
         maxWidth="xl"
         sx={{
           px: { xs: 4, md: 8 },
-          marginLeft: { xs: "auto", md: "auto" },
-          marginRight: { xs: "auto", md: "auto" },
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
         <Grid container spacing={4}>
@@ -107,24 +107,26 @@ export default function Footer() {
             <Box component="form" noValidate sx={{ display: "flex" }}>
               <TextField
                 variant="outlined"
-                value={email} // Cargar el correo almacenado en el campo de correo
-                disabled // Deshabilitar el campo para que no se pueda editar
+                value={email} // Cargar correo del estado
+                disabled // Deshabilitar el campo para edición
                 fullWidth
+                InputProps={{
+                  style: {
+                    color: "#ffffff", // Forzar texto blanco
+                    fontWeight: "bold", // Negrita para visibilidad
+                    WebkitTextFillColor: "white", // Compatibilidad con Webkit
+                  },
+                }}
                 sx={{
-                  input: {
-                    color: "#F0E68C", // Color más claro para mejorar la visibilidad
-                    fontWeight: "bold", // Agregar peso para hacer el texto más visible
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    color: "#ffffff !important", // Asegurar blanco en estado deshabilitado
+                    WebkitTextFillColor: "white", // Compatibilidad adicional
+                    opacity: 1, // Visibilidad completa
                   },
                   "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#fff", // Bordes blancos
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "#fff", // Bordes blancos en hover
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#fff", // Bordes blancos cuando está enfocado
-                    },
+                    "& fieldset": { borderColor: "#fff" },
+                    "&:hover fieldset": { borderColor: "#fff" },
+                    "&.Mui-focused fieldset": { borderColor: "#fff" },
                   },
                 }}
               />
@@ -153,14 +155,7 @@ export default function Footer() {
         </Grid>
 
         {/* Sección de Redes sociales */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            mt: 4,
-            mb: 4,
-          }}
-        >
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 4 }}>
           <IconButton
             href="https://facebook.com"
             target="_blank"
