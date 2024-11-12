@@ -91,7 +91,8 @@ function MyCarousel() {
         <Typography
           variant="body1"
           sx={{
-            color: "#f4f4f4", // Color más claro para el texto
+            color: "#f4f4f4",
+            textAlign: "justify", // Color más claro para el texto
           }}
         >
           Somos un equipo comprometido con tu futuro. Creemos que cada
