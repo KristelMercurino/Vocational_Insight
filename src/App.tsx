@@ -5,6 +5,7 @@ import Home from "./views/Home";
 import Survey from "./components/Survey"; // Asegúrate de importar tu componente Survey
 import theme from "./theme/theme";
 import Charts from "./components/Charts";
+import LookerChart from "./components/LookerChart";
 import Results from "./components/Results";
 import Feedback from "./components/Feedback";
 import Footer from "./components/footer";
@@ -26,7 +27,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Survey" element={<Survey />} />
-          <Route path="/Charts" element={<Charts />} />
+          {/* <Route path="/Charts" element={<Charts />} /> */}
+          <Route path="/Charts" element={<LookerChart />} />
+          
           <Route path="/Results" element={<Results />} />
           <Route path="/Feedback" element={<Feedback />} />
           <Route path="/login" element={<Login />} />
