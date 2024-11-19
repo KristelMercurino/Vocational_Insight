@@ -70,4 +70,8 @@ const MotivationalSection: React.FC = () => {
   );
 };
 
+<<<<<<< HEAD
 export default MotivationalSection;
+=======
+export default MotivationalSection;
+>>>>>>> luc-elgueda

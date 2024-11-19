@@ -220,4 +220,8 @@ function ResponsiveAppBar() {
   );
 }
 
+<<<<<<< HEAD
 export default ResponsiveAppBar;
+=======
+export default ResponsiveAppBar;
+>>>>>>> luc-elgueda

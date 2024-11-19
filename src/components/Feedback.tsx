@@ -218,4 +218,8 @@ export default function FeedbackForm() {
       </Snackbar>
     </Container>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> luc-elgueda
