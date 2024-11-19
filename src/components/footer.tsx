@@ -160,7 +160,11 @@ export default function Footer() {
             href="https://facebook.com"
             target="_blank"
             rel="noopener"
-            sx={{ color: "#f0f0f0", transition: "color 0.3s", "&:hover": { color: "#4caf50" } }}
+            sx={{
+              color: "#f0f0f0",
+              transition: "color 0.3s",
+              "&:hover": { color: "#4caf50" },
+            }}
           >
             <Facebook />
           </IconButton>
@@ -168,7 +172,11 @@ export default function Footer() {
             href="https://twitter.com"
             target="_blank"
             rel="noopener"
-            sx={{ color: "#f0f0f0", transition: "color 0.3s", "&:hover": { color: "#4caf50" } }}
+            sx={{
+              color: "#f0f0f0",
+              transition: "color 0.3s",
+              "&:hover": { color: "#4caf50" },
+            }}
           >
             <Twitter />
           </IconButton>
@@ -176,7 +184,11 @@ export default function Footer() {
             href="https://instagram.com"
             target="_blank"
             rel="noopener"
-            sx={{ color: "#f0f0f0", transition: "color 0.3s", "&:hover": { color: "#4caf50" } }}
+            sx={{
+              color: "#f0f0f0",
+              transition: "color 0.3s",
+              "&:hover": { color: "#4caf50" },
+            }}
           >
             <Instagram />
           </IconButton>
@@ -184,7 +196,11 @@ export default function Footer() {
             href="https://linkedin.com"
             target="_blank"
             rel="noopener"
-            sx={{ color: "#f0f0f0", transition: "color 0.3s", "&:hover": { color: "#4caf50" } }}
+            sx={{
+              color: "#f0f0f0",
+              transition: "color 0.3s",
+              "&:hover": { color: "#4caf50" },
+            }}
           >
             <LinkedIn />
           </IconButton>

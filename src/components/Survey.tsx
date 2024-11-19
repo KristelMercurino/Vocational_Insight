@@ -3,7 +3,7 @@ import {
   Container,
   FormGroup,
   FormControlLabel,
-  Checkbox,
+  Radio,
   Button,
   Typography,
   Grid,
@@ -22,11 +22,11 @@ import { useNavigate } from "react-router-dom";
 
 // Define el tipo para el estado de las preguntas
 type StateType = {
-  [key: string]: boolean;
+  [key: string]: string | undefined;
 };
 
-// Estilo personalizado para los checkboxes redondos
-const CustomCheckbox = styled(Checkbox)({
+// Estilo personalizado para los RadioButtons redondos
+const CustomRadioButton = styled(Radio)({
   "& .MuiSvgIcon-root": {
     borderRadius: "50%", // Hace que el icono sea redondo
   },
@@ -202,23 +202,12 @@ export default function Survey() {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target;
-    setState((prev) => {
-      const updatedState = { ...prev };
-      Object.keys(updatedState).forEach((key) => {
-        if (key.startsWith(name.slice(0, -1))) {
-          updatedState[key] = false;
-        }
-      });
-      return { ...updatedState, [name]: event.target.checked };
-    });
+    const { name, value } = event.target;
+    setState((prev) => ({ ...prev, [name]: value }));
   };
 
   const isFormValid = () => {
-    for (let i = 1; i <= preguntas.length; i++) {
-      if (!Object.keys(state).some((key) => key.startsWith(`q${i}`) && state[key])) return false;
-    }
-    return true;
+    return preguntas.every((_, i) => state[`q${i + 1}`]);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -232,9 +221,8 @@ export default function Survey() {
     const respuestasUsuario: { [key: string]: string } = {};
     Object.keys(state).forEach((key) => {
       if (state[key]) {
-        const questionNumber = key.slice(1, -1);
-        const optionLetter = key.slice(-1);
-        respuestasUsuario[questionNumber] = optionLetter;
+        const questionNumber = key.slice(1);
+        respuestasUsuario[questionNumber] = state[key]!;
       }
     });
 
@@ -260,7 +248,10 @@ export default function Survey() {
 
       setLoading(false); // Ocultar animación de carga
       if (response.status === 200 || response.status === 201) {
-        localStorage.setItem("resultadoEncuesta", JSON.stringify(response.data));
+        localStorage.setItem(
+          "resultadoEncuesta",
+          JSON.stringify(response.data)
+        );
         navigate("/results", { state: { message: response.data.message } });
       } else {
         alert("Error inesperado. Inténtalo de nuevo.");
@@ -289,7 +280,8 @@ export default function Survey() {
       <Dialog open={openDialog} onClose={() => handleDialogClose(false)}>
         <DialogTitle>Iniciar sesión requerido</DialogTitle>
         <DialogContent>
-          Necesitas iniciar sesión para realizar la encuesta. ¿Te gustaría iniciar sesión?
+          Necesitas iniciar sesión para realizar la encuesta. ¿Te gustaría
+          iniciar sesión?
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleDialogClose(false)} color="secondary">
@@ -312,16 +304,21 @@ export default function Survey() {
                   borderRadius: "8px",
                 }}
               >
-                <Typography variant="h6">{`${i + 1}. ${pregunta.texto}`}</Typography>
+                <Typography variant="h6">{`${i + 1}. ${
+                  pregunta.texto
+                }`}</Typography>
                 <FormGroup>
                   {pregunta.opciones.map((opcion, j) => (
                     <FormControlLabel
                       key={j}
                       control={
-                        <CustomCheckbox
-                          checked={state[`q${i + 1}${String.fromCharCode(97 + j)}`] || false}
+                        <CustomRadioButton
+                          checked={
+                            state[`q${i + 1}`] === String.fromCharCode(97 + j)
+                          }
                           onChange={handleChange}
-                          name={`q${i + 1}${String.fromCharCode(97 + j)}`}
+                          name={`q${i + 1}`}
+                          value={String.fromCharCode(97 + j)}
                         />
                       }
                       label={opcion}
@@ -351,7 +348,11 @@ export default function Survey() {
               >
                 {loading ? (
                   <>
-                    <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
+                    <CircularProgress
+                      size={24}
+                      color="inherit"
+                      sx={{ mr: 1 }}
+                    />
                     Procesando resultados...
                   </>
                 ) : (

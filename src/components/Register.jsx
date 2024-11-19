@@ -279,10 +279,7 @@ const RegistroUsuario = () => {
   };
 
   return (
-    <Grid
-      container
-      style={{ minHeight: "100vh", backgroundColor: "#2c3e50" }}
-    >
+    <Grid container style={{ minHeight: "100vh", backgroundColor: "#2c3e50" }}>
       {/* Sección izquierda con logo y texto */}
       <Grid
         item
@@ -595,11 +592,7 @@ const RegistroUsuario = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={toggleShowConfirmPassword}>
-                      {showConfirmPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),

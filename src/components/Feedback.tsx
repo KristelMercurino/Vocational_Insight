@@ -84,7 +84,10 @@ export default function FeedbackForm() {
     }
   };
 
-  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
@@ -105,8 +108,14 @@ export default function FeedbackForm() {
         marginBottom: 10,
       }}
     >
-      <Typography variant="h6" align="center" gutterBottom sx={{ color: "#ECB444" }}>
-        ¿Qué tan útil te resultaron las recomendaciones para tu elección de carrera?
+      <Typography
+        variant="h6"
+        align="center"
+        gutterBottom
+        sx={{ color: "#ECB444" }}
+      >
+        ¿Qué tan útil te resultaron las recomendaciones para tu elección de
+        carrera?
       </Typography>
 
       <Box sx={{ mt: 3, mb: 3 }}>
@@ -172,18 +181,38 @@ export default function FeedbackForm() {
             },
           }}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "Enviar Valoración"}
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "Enviar Valoración"
+          )}
         </Button>
       </Box>
 
-      <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: "100%" }}>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
           {errorMessage}
         </Alert>
       </Snackbar>
 
-      <Snackbar open={!!successMessage} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           {successMessage}
         </Alert>
       </Snackbar>

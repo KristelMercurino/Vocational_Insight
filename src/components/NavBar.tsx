@@ -130,7 +130,9 @@ function ResponsiveAppBar() {
           />
 
           {/* Links en pantallas grandes */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 3 }}>
+          <Box
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 3 }}
+          >
             {pages.map((page) => (
               <Button
                 key={page}

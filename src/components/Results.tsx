@@ -63,7 +63,8 @@ function CareerCard({ career }: { career: CareerType }) {
           <br />
           Perfil: {career.perfil}
           <br />
-          Salario Promedio: ${parseInt(career.salario_promedio).toLocaleString()}
+          Salario Promedio: $
+          {parseInt(career.salario_promedio).toLocaleString()}
           <br />
           Vacantes Promedio: {career.vacantes_promedio}
         </Typography>
@@ -92,7 +93,9 @@ export default function Results() {
 
   useEffect(() => {
     // Obtener el resultado desde localStorage
-    const resultData = JSON.parse(localStorage.getItem("resultadoEncuesta") || "{}");
+    const resultData = JSON.parse(
+      localStorage.getItem("resultadoEncuesta") || "{}"
+    );
 
     // Obtener recomendaciones desde localStorage
     if (resultData && resultData.recomendaciones) {
@@ -125,9 +128,7 @@ export default function Results() {
       );
     } else if (sortCriteria === "employability") {
       setCareers((prevCareers) =>
-        [...prevCareers].sort(
-          (a, b) => b.match_percentage - a.match_percentage
-        )
+        [...prevCareers].sort((a, b) => b.match_percentage - a.match_percentage)
       );
     }
   }, [sortCriteria]);
@@ -161,7 +162,9 @@ export default function Results() {
 
       {/* Filtro de ordenación */}
       <Box sx={{ mb: 4, display: "flex", justifyContent: "center" }}>
-        <FormControl sx={{ minWidth: 200, animation: "fadeIn 0.5s ease-in-out" }}>
+        <FormControl
+          sx={{ minWidth: 200, animation: "fadeIn 0.5s ease-in-out" }}
+        >
           <InputLabel sx={{ color: "#ECB444" }}>Ordenar por</InputLabel>
           <Select
             value={sortCriteria}
@@ -172,7 +175,9 @@ export default function Results() {
               backgroundColor: "#34495e",
               "& .MuiSelect-icon": { color: "#ECB444" },
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ECB444" },
-              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#A3D6C4" },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#A3D6C4",
+              },
               "& .MuiMenuItem-root": {
                 color: "#FFFFFF", // Color de las opciones en el menú
               },

@@ -104,9 +104,8 @@ const Login = () => {
 
         setMessage("Inicio de sesión exitoso");
 
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        navigate("/");
+        window.location.reload();
       } catch (error) {
         setMessage(error.message || "Error en el inicio de sesión");
       } finally {
@@ -162,7 +161,8 @@ const Login = () => {
             maxWidth: "80%",
           }}
         >
-          ¡Haz que cada paso cuente y encuentra la carrera que te impulse a alcanzar tu máximo potencial y éxito!
+          ¡Haz que cada paso cuente y encuentra la carrera que te impulse a
+          alcanzar tu máximo potencial y éxito!
         </Typography>
       </Grid>
 

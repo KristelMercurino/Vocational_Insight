@@ -22,9 +22,21 @@ import carreraVImage from "../assets/img/CarreraV.jpg";
 
 interface Recommendation {
   perfil_encuesta: string;
-  recomendacion_uno: { carrera: string; match_percentage: number; salario_promedio: number };
-  recomendacion_dos: { carrera: string; match_percentage: number; salario_promedio: number };
-  recomendacion_tres: { carrera: string; match_percentage: number; salario_promedio: number };
+  recomendacion_uno: {
+    carrera: string;
+    match_percentage: number;
+    salario_promedio: number;
+  };
+  recomendacion_dos: {
+    carrera: string;
+    match_percentage: number;
+    salario_promedio: number;
+  };
+  recomendacion_tres: {
+    carrera: string;
+    match_percentage: number;
+    salario_promedio: number;
+  };
   requested_at: string;
 }
 
@@ -95,16 +107,22 @@ export default function Record() {
       const topOffset = 20 + idx * 50;
       doc.setFontSize(12);
       doc.text(
-        `${new Date(rec.requested_at).toLocaleDateString()} - ${rec.perfil_encuesta}`,
+        `${new Date(rec.requested_at).toLocaleDateString()} - ${
+          rec.perfil_encuesta
+        }`,
         10,
         topOffset
       );
-      [rec.recomendacion_uno, rec.recomendacion_dos, rec.recomendacion_tres].forEach(
-        (recomendacion, i) => {
-          const recommendationText = `Recomendación ${i + 1}: ${recomendacion.carrera} - ${recomendacion.match_percentage}% Match`;
-          doc.text(recommendationText, 10, topOffset + 10 + i * 10);
-        }
-      );
+      [
+        rec.recomendacion_uno,
+        rec.recomendacion_dos,
+        rec.recomendacion_tres,
+      ].forEach((recomendacion, i) => {
+        const recommendationText = `Recomendación ${i + 1}: ${
+          recomendacion.carrera
+        } - ${recomendacion.match_percentage}% Match`;
+        doc.text(recommendationText, 10, topOffset + 10 + i * 10);
+      });
     });
 
     doc.save("historial_recomendaciones.pdf");
@@ -134,7 +152,12 @@ export default function Record() {
             </Typography>
           </Tooltip>
         )}
-        <Button variant="contained" color="secondary" sx={{ ml: 2 }} onClick={downloadPDF}>
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ ml: 2 }}
+          onClick={downloadPDF}
+        >
           DESCARGAR PDF
         </Button>
         <Button
@@ -148,11 +171,18 @@ export default function Record() {
       </Box>
 
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="50vh"
+        >
           <CircularProgress color="secondary" />
         </Box>
       ) : error ? (
-        <Typography color="error" align="center">{error}</Typography>
+        <Typography color="error" align="center">
+          {error}
+        </Typography>
       ) : (
         <Box mt={4}>
           {recommendations.map((rec, index) => (
@@ -166,14 +196,21 @@ export default function Record() {
                 "&::before": { display: "none" },
               }}
             >
-              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "#ECB444" }} />}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "#ECB444" }} />}
+              >
                 <Typography variant="h6" sx={{ color: "#ECB444" }}>
-                  {new Date(rec.requested_at).toLocaleDateString()} - {rec.perfil_encuesta}
+                  {new Date(rec.requested_at).toLocaleDateString()} -{" "}
+                  {rec.perfil_encuesta}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={2}>
-                  {[rec.recomendacion_uno, rec.recomendacion_dos, rec.recomendacion_tres].map((recomendacion, i) => (
+                  {[
+                    rec.recomendacion_uno,
+                    rec.recomendacion_dos,
+                    rec.recomendacion_tres,
+                  ].map((recomendacion, i) => (
                     <Grid item xs={12} sm={6} md={4} key={i}>
                       <Card
                         sx={{
@@ -192,14 +229,25 @@ export default function Record() {
                           component="img"
                           image={carreraVImage}
                           alt={`Recomendación ${i + 1}`}
-                          sx={{ width: "100%", height: 140, objectFit: "cover" }}
+                          sx={{
+                            width: "100%",
+                            height: 140,
+                            objectFit: "cover",
+                          }}
                         />
                         <CardContent sx={{ textAlign: "center", flexGrow: 1 }}>
-                          <Typography variant="subtitle1" sx={{ color: "#ECB444", mb: 1 }}>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{ color: "#ECB444", mb: 1 }}
+                          >
                             Recomendación {i + 1}: {recomendacion.carrera}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: "#FFFFFF", mb: 2 }}>
-                            Salario Promedio: ${recomendacion.salario_promedio.toLocaleString()}
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "#FFFFFF", mb: 2 }}
+                          >
+                            Salario Promedio: $
+                            {recomendacion.salario_promedio.toLocaleString()}
                           </Typography>
                           <Box sx={{ width: "100%" }}>
                             <LinearProgress
@@ -208,7 +256,11 @@ export default function Record() {
                               sx={{ height: 8, borderRadius: 5 }}
                               color="primary"
                             />
-                            <Typography variant="body2" align="center" sx={{ mt: 1, color: "#ECB444" }}>
+                            <Typography
+                              variant="body2"
+                              align="center"
+                              sx={{ mt: 1, color: "#ECB444" }}
+                            >
                               {recomendacion.match_percentage}% Match
                             </Typography>
                           </Box>

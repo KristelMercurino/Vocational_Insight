@@ -5,6 +5,7 @@ import Home from "./views/Home";
 import Survey from "./components/Survey"; // Asegúrate de importar tu componente Survey
 import theme from "./theme/theme";
 import Charts from "./components/Charts";
+import LookerChart from "./components/LookerChart";
 import Results from "./components/Results";
 import Feedback from "./components/Feedback";
 import Footer from "./components/footer";
@@ -15,6 +16,8 @@ import ModificarPerfil from "./components/ModificarPerfil";
 import ResetPassword from "./components/ResetPassword"; // Importamos el componente ResetPassword
 import UnsubscribeNewsletter from "./components/unsubscribenewsletter"; // Importamos el componente correctamente
 import Record from "./components/record"; // Importamos el componente Record
+import Text from "./components/Text"; // Importamos el componente
+import Opinions from "./components/Opinions"; // Importamos el nuevo componente Opinions
 
 export default function App() {
   return (
@@ -25,16 +28,22 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Survey" element={<Survey />} />
-          <Route path="/Charts" element={<Charts />} />
+          {/* <Route path="/Charts" element={<Charts />} /> */}
+          <Route path="/Charts" element={<LookerChart />} />
           <Route path="/Results" element={<Results />} />
           <Route path="/Feedback" element={<Feedback />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
-          <Route path="/reset_password_confirm" element={<ResetPassword />} /> {/* Ruta añadida */}
-          <Route path="/RecuperarContraseña" element={<RecuperarContraseña />} />
+          <Route path="/reset_password_confirm" element={<ResetPassword />} />
+          <Route
+            path="/RecuperarContraseña"
+            element={<RecuperarContraseña />}
+          />
           <Route path="/modificarperfil" element={<ModificarPerfil />} />
-          <Route path="/desuscribirse" element={<UnsubscribeNewsletter />} /> {/* Ruta corregida */}
-          <Route path="/record" element={<Record />} /> {/* Nueva ruta añadida */}
+          <Route path="/desuscribirse" element={<UnsubscribeNewsletter />} />
+          <Route path="/record" element={<Record />} />
+          <Route path="/text" element={<Text />} />
+          <Route path="/opinions" element={<Opinions />} /> {/* Nueva ruta */}
         </Routes>
         <Footer />
       </Router>
