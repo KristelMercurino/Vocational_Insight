@@ -657,8 +657,4 @@ const RegistroUsuario = () => {
   );
 };
 
-<<<<<<< HEAD
 export default RegistroUsuario;
-=======
-export default RegistroUsuario;
->>>>>>> luc-elgueda

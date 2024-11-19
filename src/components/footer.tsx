@@ -223,8 +223,4 @@ export default function Footer() {
       </Container>
     </Box>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> luc-elgueda

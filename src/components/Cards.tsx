@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
-=======
-import { useNavigate } from "react-router-dom";
->>>>>>> luc-elgueda
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -12,10 +8,6 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import Rating from "@mui/material/Rating";
-<<<<<<< HEAD
-=======
-import Button from "@mui/material/Button";
->>>>>>> luc-elgueda
 import opinion from "../assets/img/opinion.png";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -76,10 +68,6 @@ export default function ResponsiveCards() {
   const [opinions, setOpinions] = useState<Opinion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-<<<<<<< HEAD
-=======
-  const navigate = useNavigate();
->>>>>>> luc-elgueda
 
   const fetchOpinions = async () => {
     try {
@@ -92,11 +80,7 @@ export default function ResponsiveCards() {
           },
         }
       );
-<<<<<<< HEAD
       setOpinions(response.data.opiniones); // Ajuste aquí
-=======
-      setOpinions(response.data.opiniones);
->>>>>>> luc-elgueda
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || "Error al cargar las opiniones.");
@@ -129,7 +113,6 @@ export default function ResponsiveCards() {
         Opiniones de Nuestros Usuarios
       </Typography>
       <Grid container spacing={4}>
-<<<<<<< HEAD
         {opinions.slice(0, 4).map(
           (
             opinion,
@@ -147,29 +130,6 @@ export default function ResponsiveCards() {
           )
         )}
       </Grid>
-=======
-        {opinions.slice(0, 4).map((opinion, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Box sx={{ height: "100%" }}>
-              <MediaCard
-                name={opinion.Nombre}
-                opinionText={opinion.comentario}
-                rating={opinion.puntuacion}
-              />
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/opinions")}
-        >
-          Ver más opiniones
-        </Button>
-      </Box>
->>>>>>> luc-elgueda
     </Container>
   );
 }

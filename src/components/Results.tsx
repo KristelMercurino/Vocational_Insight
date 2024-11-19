@@ -211,8 +211,4 @@ export default function Results() {
       </Box>
     </Container>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> luc-elgueda
