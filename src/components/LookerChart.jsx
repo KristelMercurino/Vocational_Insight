@@ -30,7 +30,6 @@ export default function LookerEmbedWithActions() {
 
   // Encode the entire params JSON string
   const encodedParams = encodeURIComponent(JSON.stringify(params));
-
   // Construct the full Looker Studio URL with encoded params
   const lookerUrl = `https://lookerstudio.google.com/embed/reporting/3c2e44a1-b155-4e8d-84fa-194675dad9a6/page/p_vzlt9m6omd?params=${encodedParams}`;
   const goToFeedback = () => {
