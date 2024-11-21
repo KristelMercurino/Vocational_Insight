@@ -218,4 +218,8 @@ export default function FeedbackForm() {
       </Snackbar>
     </Container>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6

@@ -14,9 +14,12 @@ import Registro from "./components/Register";
 import RecuperarContraseña from "./components/RecuperarContraseña";
 import ModificarPerfil from "./components/ModificarPerfil";
 import ResetPassword from "./components/ResetPassword"; // Importamos el componente ResetPassword
-import UnsubscribeNewsletter from "./components/unsubscribenewsletter"; // Importamos el componente correctamente
-import Record from "./components/record"; // Importamos el componente Record
+<<<<<<< HEAD
+=======
+import Record from "./components/Record"; // Importamos el componente Record
 import Text from "./components/Text"; // Importamos el componente
+>>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6
+import UnsubscribeNewsletter from "./components/unsubscribenewsletter"; // Importamos el componente correctamente
 import Opinions from "./components/Opinions"; // Importamos el nuevo componente Opinions
 
 export default function App() {
@@ -43,7 +46,10 @@ export default function App() {
           <Route path="/desuscribirse" element={<UnsubscribeNewsletter />} />
           <Route path="/record" element={<Record />} />
           <Route path="/text" element={<Text />} />
+<<<<<<< HEAD
           <Route path="/opinions" element={<Opinions />} /> {/* Nueva ruta */}
+=======
+>>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6
         </Routes>
         <Footer />
       </Router>
