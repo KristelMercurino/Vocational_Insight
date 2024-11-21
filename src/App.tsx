@@ -14,16 +14,10 @@ import Registro from "./components/Register";
 import RecuperarContraseña from "./components/RecuperarContraseña";
 import ModificarPerfil from "./components/ModificarPerfil";
 import ResetPassword from "./components/ResetPassword"; // Importamos el componente ResetPassword
-<<<<<<< HEAD
-import UnsubscribeNewsletter from "./components/Unsubscribenewsletter"; // Importamos el componente correctamente
-import Record from "./components/Record"; // Importamos el componente Record
-import Text from "./components/Text"; // Importamos el componente
-=======
 import UnsubscribeNewsletter from "./components/unsubscribenewsletter"; // Importamos el componente correctamente
 import Record from "./components/record"; // Importamos el componente Record
 import Text from "./components/Text"; // Importamos el componente
 import Opinions from "./components/Opinions"; // Importamos el nuevo componente Opinions
->>>>>>> luc-elgueda
 
 export default function App() {
   return (
@@ -36,10 +30,6 @@ export default function App() {
           <Route path="/Survey" element={<Survey />} />
           {/* <Route path="/Charts" element={<Charts />} /> */}
           <Route path="/Charts" element={<LookerChart />} />
-<<<<<<< HEAD
-          
-=======
->>>>>>> luc-elgueda
           <Route path="/Results" element={<Results />} />
           <Route path="/Feedback" element={<Feedback />} />
           <Route path="/login" element={<Login />} />
@@ -53,10 +43,7 @@ export default function App() {
           <Route path="/desuscribirse" element={<UnsubscribeNewsletter />} />
           <Route path="/record" element={<Record />} />
           <Route path="/text" element={<Text />} />
-<<<<<<< HEAD
-=======
           <Route path="/opinions" element={<Opinions />} /> {/* Nueva ruta */}
->>>>>>> luc-elgueda
         </Routes>
         <Footer />
       </Router>

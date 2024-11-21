@@ -166,6 +166,20 @@ const RegistroUsuario = () => {
       errorMsg = "Por favor, seleccione su región";
     } else if (name === "id_ciudad" && !value) {
       errorMsg = "Por favor, seleccione su ciudad";
+    } else if (name === "fecha_nac") {
+      const date = new Date(value);
+      const today = new Date();
+      const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+      const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+      // Check if the date is valid
+      if (!value || isNaN(date.getTime())) {
+        errorMsg = "Por favor, ingrese una fecha de nacimiento válida";
+      } 
+      // Check if the date is within a reasonable range (18 - 100 years old)
+      else if (date > maxDate || date < minDate) {
+        errorMsg = "La fecha de nacimiento debe ser entre 18 y 100 años";
+      }
     }
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -192,6 +206,7 @@ const RegistroUsuario = () => {
       newErrors.id_region = "Por favor, seleccione su región";
     if (!formData.id_ciudad)
       newErrors.id_ciudad = "Por favor, seleccione su ciudad";
+    if (!formData.fecha_nac) newErrors.fecha_nac = "Por favor, ingrese su fecha de nacimiento";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -657,8 +672,4 @@ const RegistroUsuario = () => {
   );
 };
 
-<<<<<<< HEAD
 export default RegistroUsuario;
-=======
-export default RegistroUsuario;
->>>>>>> luc-elgueda

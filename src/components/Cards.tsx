@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
-=======
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Container,
+  Box,
+  Avatar,
+  Stack,
+  Rating,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
->>>>>>> luc-elgueda
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import Rating from "@mui/material/Rating";
-<<<<<<< HEAD
-=======
-import Button from "@mui/material/Button";
->>>>>>> luc-elgueda
-import opinion from "../assets/img/opinion.png";
 import axios from "axios";
-import CircularProgress from "@mui/material/CircularProgress";
+import opinion from "../assets/img/opinion.png"; // Esta imagen se utiliza como default en caso de que no haya avatar
 
 interface Opinion {
   puntuacion: number;
@@ -35,6 +31,11 @@ function MediaCard({
   opinionText: string;
   rating: number;
 }) {
+  // Extraemos la inicial del nombre
+  const getInitial = (name: string) => {
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
     <Card
       sx={{
@@ -52,7 +53,10 @@ function MediaCard({
     >
       <CardContent>
         <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar alt={name} src={opinion} sx={{ width: 56, height: 56 }} />
+          {/* Usamos el Avatar con la inicial del nombre */}
+          <Avatar sx={{ width: 56, height: 56, backgroundColor: "#A3D6C4" }}>
+            {getInitial(name)}
+          </Avatar>
           <Typography gutterBottom variant="h5" color="primary" component="div">
             {name}
           </Typography>
@@ -76,10 +80,7 @@ export default function ResponsiveCards() {
   const [opinions, setOpinions] = useState<Opinion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-<<<<<<< HEAD
-=======
   const navigate = useNavigate();
->>>>>>> luc-elgueda
 
   const fetchOpinions = async () => {
     try {
@@ -92,11 +93,7 @@ export default function ResponsiveCards() {
           },
         }
       );
-<<<<<<< HEAD
-      setOpinions(response.data.opiniones); // Ajuste aquí
-=======
       setOpinions(response.data.opiniones);
->>>>>>> luc-elgueda
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || "Error al cargar las opiniones.");
@@ -129,25 +126,6 @@ export default function ResponsiveCards() {
         Opiniones de Nuestros Usuarios
       </Typography>
       <Grid container spacing={4}>
-<<<<<<< HEAD
-        {opinions.slice(0, 4).map(
-          (
-            opinion,
-            index // Ajuste aquí
-          ) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <Box sx={{ height: "100%" }}>
-                <MediaCard
-                  name={opinion.Nombre}
-                  opinionText={opinion.comentario}
-                  rating={opinion.puntuacion}
-                />
-              </Box>
-            </Grid>
-          )
-        )}
-      </Grid>
-=======
         {opinions.slice(0, 4).map((opinion, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Box sx={{ height: "100%" }}>
@@ -169,7 +147,6 @@ export default function ResponsiveCards() {
           Ver más opiniones
         </Button>
       </Box>
->>>>>>> luc-elgueda
     </Container>
   );
 }

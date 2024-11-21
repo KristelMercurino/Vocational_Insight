@@ -1,11 +1,11 @@
-import { Box, Button, Snackbar, Alert } from "@mui/material";
+import { Box, Button, Snackbar, Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 
 export default function LookerEmbedWithActions() {
   const navigate = useNavigate();
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   // Retrieve the results from localStorage
   const vocationalResults = JSON.parse(localStorage.getItem("resultadoEncuesta") || "[]");
@@ -30,20 +30,23 @@ export default function LookerEmbedWithActions() {
 
   // Encode the entire params JSON string
   const encodedParams = encodeURIComponent(JSON.stringify(params));
-
   // Construct the full Looker Studio URL with encoded params
   const lookerUrl = `https://lookerstudio.google.com/embed/reporting/3c2e44a1-b155-4e8d-84fa-194675dad9a6/page/p_vzlt9m6omd?params=${encodedParams}`;
   const goToFeedback = () => {
     navigate("/feedback");
   };
 
-  const openReportInNewTab = () => {
-    window.open(lookerUrl, "_blank");
-    setOpenSnackbar(true); // Show confirmation message
+  const openDialogHandler = () => {
+    setOpenDialog(true); // Open the dialog
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const closeDialogHandler = () => {
+    setOpenDialog(false); // Close the dialog
+  };
+
+  const goToDownload = () => {
+    window.open(lookerUrl, "_blank");
+    setOpenDialog(false); // Close the dialog after opening the URL
   };
 
   return (
@@ -77,15 +80,21 @@ export default function LookerEmbedWithActions() {
             display: "flex",
             justifyContent: "center",
             gap: 2,
-            padding: 2,
+            paddingY: 2,
             backgroundColor: "#2c3e50ff",
-            position: "fixed",
-            bottom: 0,
-            width: "100%",
-            zIndex: 1000,
+            alignItems: "center",
           }}
         >
-          <Button variant="contained" color="primary" size="large" onClick={goToFeedback}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={goToFeedback}
+            sx={{
+              paddingY: 1.5,
+              margin: 0,
+            }}
+          >
             Evaluar Recomendaciones
           </Button>
 
@@ -93,24 +102,35 @@ export default function LookerEmbedWithActions() {
             variant="contained"
             color="secondary"
             size="large"
-            onClick={openReportInNewTab}
+            onClick={openDialogHandler}
             startIcon={<DownloadIcon />}
+            sx={{
+              paddingY: 1.5,
+              margin: 0,
+            }}
           >
             Descargar Gráfico en PDF
           </Button>
         </Box>
       </Box>
 
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="info" sx={{ width: "100%" }}>
-          Se ha abierto el gráfico en una nueva pestaña. Puedes descargar el PDF desde allí.
-        </Alert>
-      </Snackbar>
+      {/* Dialog for instructions */}
+      <Dialog open={openDialog} onClose={closeDialogHandler}>
+        <DialogTitle>Instrucciones para descargar</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Para descargar el gráfico en PDF, una vez que se abra la nueva ventana, haz clic derecho en cualquier parte del gráfico y selecciona la opción "Descargar página como PDF".
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={goToDownload} color="primary">
+            Ir a descargar
+          </Button>
+          <Button onClick={closeDialogHandler} color="secondary" autoFocus>
+            Cancelar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

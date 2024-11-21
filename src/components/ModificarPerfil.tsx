@@ -503,8 +503,4 @@ const ModificarPerfil = () => {
   );
 };
 
-<<<<<<< HEAD
 export default ModificarPerfil;
-=======
-export default ModificarPerfil;
->>>>>>> luc-elgueda

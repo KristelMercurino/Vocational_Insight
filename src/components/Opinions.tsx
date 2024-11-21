@@ -14,7 +14,7 @@ import {
   Button,
 } from "@mui/material";
 import axios from "axios";
-import opinionImage from "../assets/img/opinion.png"; // Reemplaza con tu imagen de opinión
+import { useNavigate } from "react-router-dom";
 
 interface Opinion {
   puntuacion: number;
@@ -27,6 +27,7 @@ export default function Opinions() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [visibleCount, setVisibleCount] = useState<number>(6); // Controla cuántas opiniones se muestran
+  const navigate = useNavigate();
 
   const fetchOpinions = async () => {
     try {
@@ -57,6 +58,14 @@ export default function Opinions() {
 
   const handleShowMore = () => {
     setVisibleCount((prevCount) => prevCount + 6); // Incrementa en 6 el límite visible
+  };
+
+  const getInitial = (name: string) => {
+    return name.charAt(0).toUpperCase(); // Extrae la inicial del nombre y la convierte en mayúscula
+  };
+
+  const handleSurveyRedirect = () => {
+    navigate("/survey"); // Redirige a la vista de la encuesta (survey.tsx)
   };
 
   if (loading) {
@@ -125,11 +134,16 @@ export default function Opinions() {
             >
               <CardContent>
                 <Stack direction="row" spacing={2} alignItems="center">
+                  {/* Avatar con la inicial del nombre */}
                   <Avatar
-                    alt={opinion.Nombre}
-                    src={opinionImage}
-                    sx={{ width: 56, height: 56 }}
-                  />
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      backgroundColor: "#A3D6C4",
+                    }}
+                  >
+                    {getInitial(opinion.Nombre)}
+                  </Avatar>
                   <Typography
                     variant="h6"
                     color="primary"
@@ -174,8 +188,18 @@ export default function Opinions() {
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 6 }}>
         <Typography variant="body2" color="text.secondary">
           ¡Gracias por confiar en nosotros! Si deseas compartir tu experiencia,
-          no dudes en dejarnos tu opinión.
+          no dudes en realizar la encuesta y dejarnos tu opinión.
         </Typography>
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleSurveyRedirect}
+        >
+          Realizar encuesta
+        </Button>
       </Box>
     </Container>
   );
