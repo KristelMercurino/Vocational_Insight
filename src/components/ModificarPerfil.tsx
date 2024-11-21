@@ -19,12 +19,12 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useNavigate } from "react-router-dom";
 
 interface Region {
-  id_region: string;
+  id_region: number; // Cambiado a number
   nombre_region: string;
 }
 
 interface Ciudad {
-  id_ciudad: string;
+  id_ciudad: number; // Cambiado a number
   nombre_ciudad: string;
 }
 
@@ -36,7 +36,7 @@ const ModificarPerfil = () => {
     fecha_nac: "",
     id_region: localStorage.getItem("id_region") || "",
     nombre_region: "",
-    id_ciudad: localStorage.getItem("id_ciudad") || "",
+    id_ciudad: 10,//localStorage.getItem("id_ciudad") || "",
     nombre_ciudad: "",
     email: "",
     contrasena: "",
@@ -82,8 +82,8 @@ const ModificarPerfil = () => {
         setFormData((prevData) => ({
           ...prevData,
           ...data,
-          id_region: data.id_region || localStorage.getItem("id_region") || "",
-          id_ciudad: data.id_ciudad || localStorage.getItem("id_ciudad") || "",
+          id_region: data.id_region ? String(data.id_region) : localStorage.getItem("id_region") || "",
+          id_ciudad: data.id_ciudad ? String(data.id_ciudad) : localStorage.getItem("id_ciudad") || "",
           fotoPerfil: data.fotoPerfil || "/default-avatar.png",
         }));
       }
@@ -121,8 +121,8 @@ const ModificarPerfil = () => {
 
   useEffect(() => {
     const initializeData = async () => {
-      await fetchUserData();
-      await fetchRegiones();
+      await fetchRegiones(); // Cargar regiones primero
+      await fetchUserData(); // Luego cargar datos del usuario
     };
 
     initializeData();
@@ -131,7 +131,7 @@ const ModificarPerfil = () => {
   useEffect(() => {
     if (formData.id_region && regiones.length > 0) {
       const regionSeleccionada = regiones.find(
-        (reg) => reg.id_region === formData.id_region
+        (reg) => String(reg.id_region) === formData.id_region
       );
       if (regionSeleccionada) {
         setFormData((prevData) => ({
@@ -141,7 +141,7 @@ const ModificarPerfil = () => {
 
         fetchCiudades(formData.id_region).then((ciudadesData) => {
           const ciudadSeleccionada = ciudadesData.find(
-            (ciu) => ciu.id_ciudad === formData.id_ciudad
+            (ciu) => String(ciu.id_ciudad) === formData.id_ciudad
           );
           if (ciudadSeleccionada) {
             setFormData((prevData) => ({
@@ -156,17 +156,17 @@ const ModificarPerfil = () => {
 
   const handleFieldClick = (fieldName: string, value: string) => {
     setFieldToEdit(fieldName);
-    setTempValue(value);
+    setTempValue(String(value)); // Asegurar que sea una cadena
 
     if (fieldName === "id_region") {
       const selectedRegion = regiones.find(
-        (region) => region.id_region === value
+        (region) => String(region.id_region) === value
       );
       if (selectedRegion) {
-        fetchCiudades(selectedRegion.id_region);
+        fetchCiudades(String(selectedRegion.id_region));
         setFormData({
           ...formData,
-          id_region: selectedRegion.id_region,
+          id_region: String(selectedRegion.id_region),
           nombre_region: selectedRegion.nombre_region,
           id_ciudad: "",
           nombre_ciudad: "",
@@ -370,12 +370,12 @@ const ModificarPerfil = () => {
                   const selectedRegionId = e.target.value;
                   setTempValue(selectedRegionId);
                   const selectedRegion = regiones.find(
-                    (region) => region.id_region === selectedRegionId
+                    (region) => String(region.id_region) === selectedRegionId
                   );
                   if (selectedRegion) {
                     setFormData({
                       ...formData,
-                      id_region: selectedRegionId,
+                      id_region: String(selectedRegion.id_region),
                       nombre_region: selectedRegion.nombre_region,
                       id_ciudad: "",
                       nombre_ciudad: "",
@@ -386,7 +386,7 @@ const ModificarPerfil = () => {
                 fullWidth
               >
                 {regiones.map((region) => (
-                  <MenuItem key={region.id_region} value={region.id_region}>
+                  <MenuItem key={region.id_region} value={String(region.id_region)}>
                     {region.nombre_region}
                   </MenuItem>
                 ))}
@@ -399,7 +399,7 @@ const ModificarPerfil = () => {
                 onChange={(e) => {
                   const selectedCityId = e.target.value;
                   const selectedCity = ciudades.find(
-                    (ciudad) => ciudad.id_ciudad === selectedCityId
+                    (ciudad) => String(ciudad.id_ciudad) === selectedCityId
                   );
                   if (selectedCity) {
                     setTempValue(selectedCityId);
@@ -413,7 +413,7 @@ const ModificarPerfil = () => {
                 fullWidth
               >
                 {ciudades.map((ciudad) => (
-                  <MenuItem key={ciudad.id_ciudad} value={ciudad.id_ciudad}>
+                  <MenuItem key={ciudad.id_ciudad} value={String(ciudad.id_ciudad)}>
                     {ciudad.nombre_ciudad}
                   </MenuItem>
                 ))}
