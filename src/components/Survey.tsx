@@ -272,7 +272,16 @@ export default function Survey() {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 3 }}>
-      <Typography variant="h4" align="center" gutterBottom>
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        gutterBottom
+        sx={{
+          color: "#ECB444", // Color amarillo para el título
+          textAlign: "center",
+          mb: 3,
+        }}
+      >
         Test Vocacional
       </Typography>
 

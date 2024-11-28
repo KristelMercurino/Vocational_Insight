@@ -98,19 +98,20 @@ const NewsSection = () => {
         sx={{
           fontWeight: "bold",
           color: "#ECB444",
-          mb: 4,
+          mb: 3,
         }}
       >
         Últimas Noticias
       </Typography>
 
       <Typography
-        variant="h5"
-        align="left"
+        variant="h4"
+        fontWeight="bold"
         gutterBottom
         sx={{
-          fontWeight: "bold",
-          color: "#f4f4f4", // Color de texto claro para que contraste con el fondo
+          color: "#ECB444", // Color amarillo para el título
+          textAlign: "center",
+          mb: 2,
         }}
       ></Typography>
 

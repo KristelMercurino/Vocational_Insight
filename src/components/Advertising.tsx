@@ -53,7 +53,16 @@ export default function UniversityAdvertisement() {
         height: { xs: "180px", sm: "200px", md: "220px" }, // Ajustar altura según tamaño de pantalla
       }}
     >
-      <Typography variant="h4" color="secondary" align="center" gutterBottom>
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        gutterBottom
+        sx={{
+          color: "#ECB444", // Color amarillo para el título
+          textAlign: "center",
+          mb: 2,
+        }}
+      >
         Instituciones de educación superior en Chile
       </Typography>
 

@@ -6,36 +6,45 @@ import {
   Typography,
   Container,
   Box,
-  LinearProgress,
   CircularProgress,
   Button,
-  Tooltip,
+  Grid,
   Card,
   CardContent,
   CardMedia,
-  Grid,
+  LinearProgress,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
 import carreraVImage from "../assets/img/CarreraV.jpg";
+import logo from "../assets/img/version_con_fondo.png"; // Ruta del logo
 
 interface Recommendation {
-  perfil_encuesta: string;
   recomendacion_uno: {
     carrera: string;
+    descripcion: string;
+    perfil: string;
     match_percentage: number;
     salario_promedio: number;
+    vacantes_promedio: number;
   };
   recomendacion_dos: {
     carrera: string;
+    descripcion: string;
+    perfil: string;
     match_percentage: number;
     salario_promedio: number;
+    vacantes_promedio: number;
   };
   recomendacion_tres: {
     carrera: string;
+    descripcion: string;
+    perfil: string;
     match_percentage: number;
     salario_promedio: number;
+    vacantes_promedio: number;
   };
   requested_at: string;
 }
@@ -55,7 +64,6 @@ export default function Record() {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentTime, setCurrentTime] = useState<string>("");
   const token = localStorage.getItem("authToken");
 
   const fetchRecommendations = async () => {
@@ -82,49 +90,89 @@ export default function Record() {
     }
   };
 
-  // Función para actualizar la hora en tiempo real
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      setCurrentTime(now.toLocaleString());
-    };
-
-    const timer = setInterval(updateClock, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   useEffect(() => {
     fetchRecommendations();
   }, []);
 
-  // Función para descargar el historial en PDF
   const downloadPDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Historial de Recomendaciones", 10, 10);
 
-    recommendations.forEach((rec, idx) => {
-      const topOffset = 20 + idx * 50;
-      doc.setFontSize(12);
-      doc.text(
-        `${new Date(rec.requested_at).toLocaleDateString()} - ${
-          rec.perfil_encuesta
-        }`,
-        10,
-        topOffset
-      );
+    // Agregar logo
+    doc.addImage(logo, "PNG", 10, 10, 50, 15);
+
+    // Título del documento
+    doc.setFontSize(16);
+    doc.text("Historial de Recomendaciones", 105, 20, { align: "center" });
+
+    // Fecha de generación
+    const currentDate = new Date().toLocaleDateString();
+    doc.setFontSize(10);
+    doc.text(`Generado el: ${currentDate}`, 190, 10, { align: "right" });
+
+    // Preparar datos para la tabla
+    const tableData = recommendations.flatMap((rec) => [
       [
+        {
+          content: `Recomendaciones del ${new Date(
+            rec.requested_at
+          ).toLocaleDateString()}`,
+          colSpan: 7, // Cambiado para incluir la nueva columna
+          styles: { halign: "center", fillColor: "#ECB444" },
+        },
+      ],
+      ...[
         rec.recomendacion_uno,
         rec.recomendacion_dos,
         rec.recomendacion_tres,
-      ].forEach((recomendacion, i) => {
-        const recommendationText = `Recomendación ${i + 1}: ${
-          recomendacion.carrera
-        } - ${recomendacion.match_percentage}% Match`;
-        doc.text(recommendationText, 10, topOffset + 10 + i * 10);
-      });
+      ].map((recomendacion, i) => [
+        `Recomendación ${i + 1}`,
+        recomendacion.carrera,
+        recomendacion.descripcion,
+        recomendacion.perfil,
+        `$${recomendacion.salario_promedio.toLocaleString()}`,
+        recomendacion.vacantes_promedio.toLocaleString(), // Nueva columna
+        `${recomendacion.match_percentage}%`,
+      ]),
+    ]);
+
+    autoTable(doc, {
+      head: [
+        [
+          "ID",
+          "Carrera",
+          "Descripción",
+          "Perfil",
+          "Salario Promedio",
+          "Vacantes Promedio", // Encabezado de la nueva columna
+          "Match %",
+        ],
+      ],
+      body: tableData as any,
+      startY: 30,
+      styles: { fontSize: 10, textColor: "#2c3e50ff" },
+      headStyles: { fillColor: "#ECB444", textColor: "#2c3e50ff" },
+      alternateRowStyles: { fillColor: "#A3D6C4" },
+      theme: "grid",
     });
 
+    // Pie de página
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.text(
+        `Página ${i} de ${pageCount}`,
+        doc.internal.pageSize.getWidth() - 20,
+        doc.internal.pageSize.getHeight() - 10
+      );
+      doc.text(
+        "© 2024 Vocational Insight - Todos los derechos reservados.",
+        10,
+        doc.internal.pageSize.getHeight() - 10
+      );
+    }
+
+    // Descargar el archivo PDF
     doc.save("historial_recomendaciones.pdf");
   };
 
@@ -144,14 +192,6 @@ export default function Record() {
         <Typography variant="h4" color="secondary" gutterBottom>
           Historial de Recomendaciones
         </Typography>
-
-        {recommendations[0] && (
-          <Tooltip title="Fecha del último envío de encuesta" arrow>
-            <Typography variant="body2" color="secondary" sx={{ mr: 2 }}>
-              Último envío: {currentTime}
-            </Typography>
-          </Tooltip>
-        )}
         <Button
           variant="contained"
           color="secondary"
@@ -200,8 +240,7 @@ export default function Record() {
                 expandIcon={<ExpandMoreIcon sx={{ color: "#ECB444" }} />}
               >
                 <Typography variant="h6" sx={{ color: "#ECB444" }}>
-                  {new Date(rec.requested_at).toLocaleDateString()} -{" "}
-                  {rec.perfil_encuesta}
+                  {new Date(rec.requested_at).toLocaleDateString()}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -244,10 +283,28 @@ export default function Record() {
                           </Typography>
                           <Typography
                             variant="body2"
+                            sx={{ color: "#FFFFFF", mb: 1 }}
+                          >
+                            {recomendacion.descripcion}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "#FFFFFF", mb: 1 }}
+                          >
+                            Perfil: {recomendacion.perfil}
+                          </Typography>
+                          <Typography
+                            variant="body2"
                             sx={{ color: "#FFFFFF", mb: 2 }}
                           >
                             Salario Promedio: $
                             {recomendacion.salario_promedio.toLocaleString()}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "#FFFFFF", mb: 2 }}
+                          >
+                            Vacantes Promedio: {recomendacion.vacantes_promedio}
                           </Typography>
                           <Box sx={{ width: "100%" }}>
                             <LinearProgress

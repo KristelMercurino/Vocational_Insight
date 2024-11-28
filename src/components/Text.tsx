@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid, Typography, Container, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import MotivationalImage from "../assets/img/motivacion.png"; // Ruta de tu imagen motivacional
+import MotivationalImage from "../assets/img/motivated_student.png"; // Ajusta la ruta según tu proyecto
 
 const MotivationalSection: React.FC = () => {
   const theme = useTheme();
@@ -10,50 +10,65 @@ const MotivationalSection: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "ECB444",
-        paddingY: 6,
-        paddingX: { xs: 3, md: 8 },
+        background: "linear-gradient(180deg, #2A3A55, #1F2937)", // Fondo con gradiente
+        paddingY: 6, // Espaciado vertical
+        paddingX: { xs: 2, md: 10 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           spacing={4}
           alignItems="center"
-          direction={isSmallScreen ? "column" : "row"}
+          direction={isSmallScreen ? "column-reverse" : "row"}
         >
-          {/* Imagen en el lado izquierdo */}
-          <Grid item xs={12} md={6}>
+          {/* Imagen */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Box
               component="img"
               src={MotivationalImage}
               alt="Motivational Image"
               sx={{
-                width: "60%", // Ajusta al 80% del contenedor
-                height: "auto",
-                borderRadius: 2,
-                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
-                mx: "auto", // Centra la imagen dentro del contenedor
-                display: "block",
+                width: "100%",
+                maxWidth: "700px", // Limita el tamaño máximo
               }}
             />
           </Grid>
 
-          {/* Texto motivacional en el lado derecho */}
-          <Grid item xs={12} md={6}>
+          {/* Texto */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              textAlign: { xs: "center", md: "justify" }, // Centrado en pantallas pequeñas
+            }}
+          >
             <Typography
               variant="h4"
               sx={{
                 fontWeight: "bold",
-                color: "#ECB444",
-                marginBottom: 2,
+                color: "#ECB444", // Amarillo para el título
+                mb: 2,
+                textAlign: "center", // Título centrado en todas las pantallas
               }}
             >
               ¿Por qué es importante llenar este formulario?
             </Typography>
             <Typography
-              variant="body1"
-              sx={{ color: "#f4f4f4", lineHeight: 1.7, textAlign: "justify" }}
+              variant="h6"
+              sx={{
+                color: "#F4F4F4", // Color claro para contraste
+                lineHeight: 1.8, // Espaciado entre líneas
+              }}
             >
               El formulario te ayudará a descubrir tus verdaderos intereses y
               habilidades. Te proporciona una guía personalizada para elegir una

@@ -18,10 +18,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// Importar la imagen
-import carreraVImage from "../assets/img/CarreraV.jpg";
-
-// Define el tipo de datos para cada carrera
+// Define the type for each career
 type CareerType = {
   carrera: string;
   descripcion: string;
@@ -29,9 +26,10 @@ type CareerType = {
   perfil: string;
   salario_promedio: string;
   vacantes_promedio: string;
+  imagen_carrera: string; // Add the field for the image URL
 };
 
-// Componente para cada tarjeta de carrera
+// Component for each career card
 function CareerCard({ career }: { career: CareerType }) {
   return (
     <Card
@@ -50,8 +48,8 @@ function CareerCard({ career }: { career: CareerType }) {
     >
       <CardMedia
         component="img"
-        image={carreraVImage} // Usar la imagen importada
-        alt="Carrera Vocational Insight"
+        image={career.imagen_carrera} // Use the dynamic image from recommendations
+        alt={career.carrera}
         sx={{ height: 243, width: "100%", objectFit: "cover" }}
       />
       <CardContent>
@@ -87,17 +85,19 @@ function CareerCard({ career }: { career: CareerType }) {
 export default function Results() {
   const [careers, setCareers] = useState<CareerType[]>([]);
   const [error, setError] = useState<string>("");
-  const [sortCriteria, setSortCriteria] = useState<string>(""); // Estado para el criterio de ordenación
+  const [sortCriteria, setSortCriteria] = useState<string>(""); // State for sorting criteria
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // Obtener el resultado desde localStorage
+    // Get the result data from localStorage
     const resultData = JSON.parse(
       localStorage.getItem("resultadoEncuesta") || "{}"
     );
 
-    // Obtener recomendaciones desde localStorage
+    console.log(resultData);
+
+    // Extract recommendations
     if (resultData && resultData.recomendaciones) {
       const recomendaciones = resultData.recomendaciones.map((rec: any) => ({
         carrera: rec.carrera,
@@ -106,6 +106,7 @@ export default function Results() {
         perfil: rec.perfil,
         salario_promedio: rec.salario_promedio,
         vacantes_promedio: rec.vacantes_promedio,
+        imagen_carrera: rec.imagen_carrera, // Include the image URL
       }));
       setCareers(recomendaciones);
     } else {
@@ -113,12 +114,12 @@ export default function Results() {
     }
   }, [location.state]);
 
-  // Maneja el cambio en el criterio de ordenación
+  // Handle sorting criteria change
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSortCriteria(event.target.value as string);
   };
 
-  // Filtra las carreras según el criterio de ordenación seleccionado
+  // Filter careers based on sorting criteria
   useEffect(() => {
     if (sortCriteria === "salary") {
       setCareers((prevCareers) =>
@@ -133,7 +134,7 @@ export default function Results() {
     }
   }, [sortCriteria]);
 
-  // Función para redirigir a la página de comparativa
+  // Navigate to comparison charts
   const handleNavigateToCharts = () => {
     navigate("/charts");
   };
@@ -160,7 +161,7 @@ export default function Results() {
         </Alert>
       )}
 
-      {/* Filtro de ordenación */}
+      {/* Sorting Filter */}
       <Box sx={{ mb: 4, display: "flex", justifyContent: "center" }}>
         <FormControl
           sx={{ minWidth: 200, animation: "fadeIn 0.5s ease-in-out" }}
@@ -179,7 +180,7 @@ export default function Results() {
                 borderColor: "#A3D6C4",
               },
               "& .MuiMenuItem-root": {
-                color: "#FFFFFF", // Color de las opciones en el menú
+                color: "#FFFFFF", // Color of options in the menu
               },
             }}
           >
@@ -198,7 +199,7 @@ export default function Results() {
         ))}
       </Grid>
 
-      {/* Botón para ver comparativa */}
+      {/* Button to navigate to comparison */}
       <Box textAlign="center" sx={{ mt: 4 }}>
         <Button
           variant="contained"

@@ -179,6 +179,8 @@ const RegistroUsuario = () => {
     if (!formData.apellido)
       newErrors.apellido = "Por favor, ingrese su apellido";
     if (!formData.genero) newErrors.genero = "Seleccione su género";
+    if (!formData.fecha_nac)
+      newErrors.fecha_nac = "Por favor, ingrese su fecha de nacimiento"; // NUEVA VALIDACIÓN
     if (
       !formData.email ||
       !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)
@@ -438,8 +440,8 @@ const RegistroUsuario = () => {
               onChange={handleChange}
               fullWidth
               margin="normal"
-              error={!!errors.fecha_nac}
-              helperText={errors.fecha_nac}
+              error={!!errors.fecha_nac} // Agrega esta línea
+              helperText={errors.fecha_nac} // Agrega esta línea
             />
 
             {/* Dropdown para Región */}
