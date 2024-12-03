@@ -223,8 +223,4 @@ export default function Footer() {
       </Container>
     </Box>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6

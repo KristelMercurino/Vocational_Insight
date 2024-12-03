@@ -44,7 +44,6 @@ function MyCarousel() {
       <Box
         sx={{
           mt: 2,
-          mb: 2,
           backgroundColor: "#2c3e50ff",
           padding: 4,
           borderRadius: 3,
@@ -79,17 +78,18 @@ function MyCarousel() {
         }}
       >
         <Typography
-          variant="h5"
+          variant="h4"
           fontWeight="bold"
           gutterBottom
           sx={{
-            color: "#ECB444", // Color amarillo para el título
+            color: "#ECB444", // Color amarillo para el título,
+            mt: 0,
           }}
         >
           ¿Quiénes somos?
         </Typography>
         <Typography
-          variant="body1"
+          variant="h6"
           sx={{
             color: "#f4f4f4",
             textAlign: "justify", // Color más claro para el texto

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid, Typography, Container, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import MotivationalImage from "../assets/img/motivated_student.png"; // Asegúrate de que la ruta sea correcta
+import MotivationalImage from "../assets/img/motivated_student.png"; // Ajusta la ruta según tu proyecto
 
 const MotivationalSection: React.FC = () => {
   const theme = useTheme();
@@ -10,8 +10,8 @@ const MotivationalSection: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#2A3A55", // Fondo respetando la paleta original
-        paddingY: 6, // Ajusta este valor si es necesario reducir espacios verticales
+        background: "linear-gradient(180deg, #2A3A55, #1F2937)", // Fondo con gradiente
+        paddingY: 6, // Espaciado vertical
         paddingX: { xs: 2, md: 10 },
       }}
     >
@@ -20,19 +20,16 @@ const MotivationalSection: React.FC = () => {
           container
           spacing={4}
           alignItems="center"
-          direction={isSmallScreen ? "column" : "row"}
+          direction={isSmallScreen ? "column-reverse" : "row"}
         >
-          {/* Imagen ajustada */}
+          {/* Imagen */}
           <Grid
             item
             xs={12}
             md={6}
             sx={{
               display: "flex",
-              justifyContent: "center", // Centra horizontalmente
-              alignItems: "flex-start", // Ajusta para iniciar desde arriba
-              height: "100%", // Deja que el contenedor ajuste su altura automáticamente
-              overflow: "hidden", // Recorta el contenido que sobresale
+              justifyContent: "center",
             }}
           >
             <Box
@@ -41,33 +38,36 @@ const MotivationalSection: React.FC = () => {
               alt="Motivational Image"
               sx={{
                 width: "100%",
-                maxWidth: "800px", // Asegura un tamaño máximo razonable
-                height: "auto",
-                position: "relative",
-                marginBottom: "-5px",  // Permite mover la imagen
-                // Baja la imagen según el límite amarillo
+                maxWidth: "700px", // Limita el tamaño máximo
               }}
             />
           </Grid>
 
-          {/* Texto motivacional */}
-          <Grid item xs={12} md={6} sx={{ padding: 0 }}>
+          {/* Texto */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              textAlign: { xs: "center", md: "justify" }, // Centrado en pantallas pequeñas
+            }}
+          >
             <Typography
               variant="h4"
               sx={{
                 fontWeight: "bold",
-                color: "#ECB444", // Color amarillo
-                marginBottom: 2,
+                color: "#ECB444", // Amarillo para el título
+                mb: 2,
+                textAlign: "center", // Título centrado en todas las pantallas
               }}
             >
               ¿Por qué es importante llenar este formulario?
             </Typography>
             <Typography
-              variant="body1"
+              variant="h6"
               sx={{
                 color: "#F4F4F4", // Color claro para contraste
-                lineHeight: 1.7,
-                textAlign: "justify",
+                lineHeight: 1.8, // Espaciado entre líneas
               }}
             >
               El formulario te ayudará a descubrir tus verdaderos intereses y
@@ -85,8 +85,4 @@ const MotivationalSection: React.FC = () => {
   );
 };
 
-<<<<<<< HEAD
 export default MotivationalSection;
-=======
-export default MotivationalSection;
->>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6

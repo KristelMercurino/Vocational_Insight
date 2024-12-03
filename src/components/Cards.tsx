@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -14,21 +13,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-=======
-import React, { useEffect, useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import Rating from "@mui/material/Rating";
-import opinion from "../assets/img/opinion.png";
->>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6
 import axios from "axios";
-import opinion from "../assets/img/opinion.png"; // Esta imagen se utiliza como default en caso de que no haya avatar
 
 interface Opinion {
   puntuacion: number;
@@ -94,10 +79,7 @@ export default function ResponsiveCards() {
   const [opinions, setOpinions] = useState<Opinion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-<<<<<<< HEAD
   const navigate = useNavigate();
-=======
->>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6
 
   const fetchOpinions = async () => {
     try {
@@ -110,11 +92,7 @@ export default function ResponsiveCards() {
           },
         }
       );
-<<<<<<< HEAD
       setOpinions(response.data.opiniones);
-=======
-      setOpinions(response.data.opiniones); // Ajuste aquí
->>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || "Error al cargar las opiniones.");
@@ -131,7 +109,7 @@ export default function ResponsiveCards() {
   }, []);
 
   if (loading) return <CircularProgress />;
-  if (error) return <Typography>{error}</Typography>;
+  if (error) return null; // Oculta cualquier mensaje de error
 
   return (
     <Container
@@ -147,7 +125,6 @@ export default function ResponsiveCards() {
         Opiniones de Nuestros Usuarios
       </Typography>
       <Grid container spacing={4}>
-<<<<<<< HEAD
         {opinions.slice(0, 4).map((opinion, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Box sx={{ height: "100%" }}>
@@ -169,25 +146,6 @@ export default function ResponsiveCards() {
           Ver más opiniones
         </Button>
       </Box>
-=======
-        {opinions.slice(0, 4).map(
-          (
-            opinion,
-            index // Ajuste aquí
-          ) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <Box sx={{ height: "100%" }}>
-                <MediaCard
-                  name={opinion.Nombre}
-                  opinionText={opinion.comentario}
-                  rating={opinion.puntuacion}
-                />
-              </Box>
-            </Grid>
-          )
-        )}
-      </Grid>
->>>>>>> 5b64b8014be895520cf31336b0683b981e2252b6
     </Container>
   );
 }
